@@ -1,7 +1,7 @@
 {
   "id": "ts-lru-cache",
   "category": "generation",
-  "description": "Implement a generic LRU cache in TypeScript.",
+  "description": "Implement a generic LRU cache in TypeScript with optional TTL.",
   "promptFile": "scenarios/ts-lru-cache/prompt.md",
   "templateDir": "scenarios/ts-lru-cache/template",
   "solutionFiles": ["src/lruCache.ts"],
