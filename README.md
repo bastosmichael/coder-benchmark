@@ -1,15 +1,10 @@
-# Coder Models Benchmark
+# ollama-coder-bench
 
-This repository benchmarks multiple local LLM coder models using Ollama.
-It evaluates:
-- TypeScript generation quality
-- compilation success
-- ESLint/Prettier compliance
-- unit test pass rate
-- instruction-following
-- latency
+Local Ollama coder model benchmark for TypeScript.
 
-Run CLI:
 ```bash
-npm run cli -- run
-npm run cli -- summarize results.json
+npm install
+npm run prepare-models
+npm run bench
+npm run summarize
+```

@@ -1,31 +1,24 @@
 {
-  "name": "coder-bench",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "cli": "node --loader ts-node/esm src/cli/index.ts",
-    "build": "tsc -p tsconfig.json",
-    "lint": "eslint 'src/**/*.ts'"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "name": "ollama-coder-bench",
+  "private": true,
   "type": "module",
-  "description": "",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint 'src/**/*.ts'",
+    "cli": "node --loader ts-node/esm src/cli/index.ts",
+    "prepare-models": "npm run cli -- prepare-models",
+    "bench": "npm run cli -- run",
+    "summarize": "npm run cli -- summarize results.json"
+  },
   "devDependencies": {
-    "@types/jest": "^30.0.0",
-    "@types/node": "^24.10.1",
-    "@typescript-eslint/eslint-plugin": "^8.48.1",
-    "@typescript-eslint/parser": "^8.48.1",
-    "commander": "^14.0.2",
-    "eslint": "^9.39.1",
-    "execa": "^9.6.1",
-    "jest": "^30.2.0",
-    "prettier": "^3.7.4",
-    "ts-jest": "^29.4.6",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.9.3",
-    "vitest": "^4.0.15"
+    "typescript": "*",
+    "ts-node": "*",
+    "@types/node": "*",
+    "eslint": "*",
+    "@typescript-eslint/eslint-plugin": "*",
+    "@typescript-eslint/parser": "*",
+    "prettier": "*",
+    "commander": "*",
+    "execa": "*"
   }
 }
