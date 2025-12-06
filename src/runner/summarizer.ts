@@ -2,11 +2,11 @@ import fs from 'fs/promises';
 import { RunResult } from './types.js';
 import { summarizeModelResults } from './metrics.js';
 
-export async function summarizeResults(file: string): Promise<void> {
+export async function summarizeResults(file: string, quiet: boolean = false): Promise<void> {
   try {
     const content = await fs.readFile(file, 'utf8');
 
-    // Attempt parse as BenchmarkReport, fallback to array for backward compat if needed (though we changed it)
+    // Attempt parse as BenchmarkReport, fallback to array for backward compat if needed
     const json = JSON.parse(content);
     let results: RunResult[];
     let system: any = null;
@@ -42,23 +42,25 @@ export async function summarizeResults(file: string): Promise<void> {
       'Latency': s.medianLatencyMs
     }));
 
-    if (system) {
-      console.log(`System: ${system.platform} ${system.release} (${system.arch})`);
-      console.log(`CPU: ${system.cpuModel} (${system.cpuCores} cores)`);
-      console.log(`Memory: ${(system.totalMemory / 1024 / 1024 / 1024).toFixed(2)} GB`);
-      console.log('');
-    }
+    if (!quiet) {
+      if (system) {
+        console.log(`System: ${system.platform} ${system.release} (${system.arch})`);
+        console.log(`CPU: ${system.cpuModel} (${system.cpuCores} cores)`);
+        console.log(`Memory: ${(system.totalMemory / 1024 / 1024 / 1024).toFixed(2)} GB`);
+        console.log('');
+      }
 
-    console.table(tableData);
+      console.table(tableData);
+    }
 
     // Generate Markdown Table
     let markdown = '';
 
     if (system) {
-      markdown += `**System Environment**\n`;
-      markdown += `- **OS**: ${system.platform} ${system.release} (${system.arch})\n`;
-      markdown += `- **CPU**: ${system.cpuModel} (${system.cpuCores} cores)\n`;
-      markdown += `- **Memory**: ${(system.totalMemory / 1024 / 1024 / 1024).toFixed(2)} GB\n\n`;
+      markdown += `** System Environment **\n`;
+      markdown += `- ** OS **: ${system.platform} ${system.release} (${system.arch}) \n`;
+      markdown += `- ** CPU **: ${system.cpuModel} (${system.cpuCores} cores) \n`;
+      markdown += `- ** Memory **: ${(system.totalMemory / 1024 / 1024 / 1024).toFixed(2)} GB\n\n`;
     }
 
     markdown += '\n| Model | Score | C++ | Rust | Hs | Scala | Java | C# | Go | Dart | TS | Py | Ruby | PHP | Bash | HTML | SQL | Latency (ms) |\n';
@@ -73,20 +75,22 @@ export async function summarizeResults(file: string): Promise<void> {
     let readme = await fs.readFile(readmePath, 'utf8');
 
     const header = '## Benchmark Summary';
-    const regex = new RegExp(`${header}[\\s\\S]*$`, 'i');
+    const regex = new RegExp(`${header} [\\s\\S] * $`, 'i');
 
     if (regex.test(readme)) {
-      readme = readme.replace(regex, `${header}\n\nLast updated: ${new Date().toISOString()}\n\n${markdown}`);
+      readme = readme.replace(regex, `${header} \n\nLast updated: ${new Date().toISOString()} \n\n${markdown} `);
     } else {
-      readme += `\n\n${header}\n\nLast updated: ${new Date().toISOString()}\n\n${markdown}`;
+      readme += `\n\n${header} \n\nLast updated: ${new Date().toISOString()} \n\n${markdown} `;
     }
 
     await fs.writeFile(readmePath, readme);
-    console.log(`Updated ${readmePath} with new results.`);
+    if (!quiet) {
+      console.log(`Updated ${readmePath} with new results.`);
+    }
 
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error';
-    console.warn(`Could not read results from ${file}: ${message}`);
+    console.warn(`Could not read results from ${file}: ${message} `);
   }
 }
 

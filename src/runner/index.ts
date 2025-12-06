@@ -187,30 +187,9 @@ export async function runAll(options: RunOptions): Promise<void> {
   }
 
   /* ... */
-  // Execute with concurrency
-  const concurrency = options.concurrency || 1;
-  const activeWorkers: Promise<void>[] = [];
-
-  // Use a simple iterator
-  const queue = [...tasks];
-
-  const worker = async () => {
-    while (queue.length > 0) {
-      const task = queue.shift();
-      if (task) await task();
-    }
-  };
-
-  for (let i = 0; i < concurrency; i++) {
-    activeWorkers.push(worker());
-  }
-
-  await Promise.all(activeWorkers);
-
-  // Capture System Info
+  // Capture System Info UP FRONT so we can save it incrementally
   const cpus = os.cpus();
   const cpuModel = cpus.length > 0 ? cpus[0].model : 'Unknown';
-  // Speed is often 0 on some systems/VMs if not reported per core correctly
   const cpuSpeed = cpus.length > 0 ? cpus[0].speed : 0;
 
   const systemInfo: SystemInfo = {
@@ -223,12 +202,53 @@ export async function runAll(options: RunOptions): Promise<void> {
     totalMemory: os.totalmem(),
   };
 
-  const report: BenchmarkReport = {
-    system: systemInfo,
-    results
+  // Function to save progress safely
+  let isSaving = false;
+  const saveProgress = async () => {
+    if (isSaving) return; // simple mutex, skip if busy
+    isSaving = true;
+    try {
+      const report: BenchmarkReport = {
+        system: systemInfo,
+        results
+      };
+      await fs.writeFile(options.outFile, JSON.stringify(report, null, 2));
+      // We can also update the README here, but let's be careful about console spam
+      // await summarizeResults(options.outFile); 
+      // Actually user wants to see results per model. 
+      // summarizer prints to console too.
+    } catch (err) {
+      console.error('Failed to save progress:', err);
+    } finally {
+      isSaving = false;
+    }
   };
 
-  await fs.writeFile(options.outFile, JSON.stringify(report, null, 2));
+  // Execute with concurrency
+  const concurrency = options.concurrency || 1;
+  const activeWorkers: Promise<void>[] = [];
+
+  // Use a simple iterator
+  const queue = [...tasks];
+
+  const worker = async () => {
+    while (queue.length > 0) {
+      const task = queue.shift();
+      if (task) {
+        await task();
+        await saveProgress();
+      }
+    }
+  };
+
+  for (let i = 0; i < concurrency; i++) {
+    activeWorkers.push(worker());
+  }
+
+  await Promise.all(activeWorkers);
+
+  // Final save and summary
+  await saveProgress();
   console.log(`Wrote ${results.length} results to ${options.outFile}`);
 
   console.log('\n--- Benchmark Summary ---\n');
