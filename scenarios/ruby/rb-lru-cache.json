@@ -1,0 +1,18 @@
+{
+    "id": "rb-lru-cache",
+    "category": "generation",
+    "description": "Implement an LRU Cache in Ruby.",
+    "promptFile": "scenarios/ruby/rb-lru-cache/prompt.md",
+    "templateDir": "scenarios/ruby/rb-lru-cache/template",
+    "solutionFiles": [
+        "src/lru_cache.rb"
+    ],
+    "commands": {
+        "build": "ruby -c src/lru_cache.rb",
+        "lint": "echo noop",
+        "test": "ruby tests/test_lru.rb"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

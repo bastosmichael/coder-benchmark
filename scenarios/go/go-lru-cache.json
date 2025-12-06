@@ -1,0 +1,18 @@
+{
+    "id": "go-lru-cache",
+    "category": "generation",
+    "description": "Implement an LRU Cache in Go.",
+    "promptFile": "scenarios/go/go-lru-cache/prompt.md",
+    "templateDir": "scenarios/go/go-lru-cache/template",
+    "solutionFiles": [
+        "src/lru.go"
+    ],
+    "commands": {
+        "build": "go build ./src/...",
+        "lint": "go vet ./src/...",
+        "test": "go test ./src/..."
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

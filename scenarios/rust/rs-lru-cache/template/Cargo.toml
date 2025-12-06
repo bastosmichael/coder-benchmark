@@ -1,0 +1,14 @@
+[package]
+name = "rs_lru_cache"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# No external dependencies for core LRU usually, but maybe `linked-hash-map`?
+# Prompt usually asks to implement from scratch or use std. 
+# Typescript prompt allowed Map. Python allowed OrderedDict.
+# Rust std::collections::HashMap is fine, but for LRU logic usually need a doubly linked list.
+# std::collections::LinkedList is available. 
+
+[dev-dependencies]
+# None needed for basic tests

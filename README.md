@@ -205,58 +205,59 @@ For every model and every scenario, the framework performs a rigorous lifecycle 
 2.  **Generation**: The model generates the full source code.
 3.  **Extraction**: The code block is parsed. If the model output is chatty or malformed, it counts as an instruction violation.
 4.  **Compilation (Build)**:
-    *   **TypeScript**: Runs `npm run build` (tsc) with `strict: true`, `noImplicitAny`, etc.
-    *   **Python**: Runs `python -m py_compile` to verify syntax validity.
-    *   **Compiled Langs (C++/Rust)**: Will run full compiler toolchains.
+    *   **TypeScript**: Runs `npm run build` (tsc) with `strict: true`.
+    *   **Python**: Runs `python -m py_compile`.
+    *   **Compiled (C++, Rust, Go, Java, C#, Scala, Haskell, OCaml)**: Runs full compiler toolchains (g++, cargo, go build, javac, dotnet, scalac, ghc, ocamlopt).
+    *   **Scripting (Ruby, PHP, Bash)**: Runs syntax checkers (`ruby -c`, `php -l`, `bash -n`).
+    *   **Other (HTML, SQL)**: Validates structure or schema correctness.
 5.  **Linting**:
-    *   **TypeScript**: Runs `eslint` with strict rules. The code must be idiomatic and clean.
-    *   **Python**: Runs `pylint`.
+    *   **TypeScript**: `eslint`.
+    *   **Python**: `pylint`.
+    *   **Others**: Uses standard linters where available (e.g., `cargo clippy`, `go vet`).
 6.  **Testing**:
-    *   Runs a robust test suite (Vitest for TS, Pytest for Python).
-    *   Tests include **Happy Paths**, **Edge Cases**, and **High-Concurrency Stress Tests**.
-    *   *Example*: The TaskQueue test hammers the implementation with 100 concurrent async tasks and random failures to ensure the model correctly implemented rate limiting and retries without race conditions.
+    *   Runs robust test suites (Vitest, Pytest, XUnit, JUnit, Go Test, RSpec, etc.).
 
 ### 2. The Scoring System
 A model isn't "good" just because it output code. It is graded on a weighted curve:
 
 $$ Score = (Compile \times 30\%) + (LintClean \times 20\%) + (TestPass \times 50\%) + SpeedBonus $$
 
-*   **Compilation (30%)**: Did it generate valid syntax that respects the language's strict type system?
-*   **Lint Cleanliness (20%)**: Is the code messy, unused variables, or bad patterns?
-*   **Test Pass Rate (50%)**: Does it actually work under load?
-*   **Speed Bonus**: We reward low latency. `2000 / (LatencyMs + 100)`. A model that fails everything quickly is still useless, but a model that passes everything in 20ms is better than one taking 20s.
-
 ### 3. Language Specifics & Nuances
 
 Different languages pose different challenges to LLMs. This benchmark attempts to normalize difficulty by enforcing "Production Grade" standards for each.
 
-#### **TypeScript**
-*   **Challenge**: The Type System.
-*   **Requirement**: `strict: true`. The model **cannot** use `any`. It must misuse generic types, partials, or optional chaining.
-*   **Why it fails**: Models often get lazy and cast to `any` or miss-handle `undefined` checks, causing the build step to fail immediately.
+#### **High Difficulty (C++, Rust, Haskell, OCaml)**
+*   **Challenge**: Memory safety, Borrow Checker, Pure Functional paradigms.
+*   **Requirement**: Zero compiler warnings, idiomatic resource management.
+*   **Typical Failure**: Models struggle to satisfy the borrow checker (Rust) or handle complex monads (Haskell) without hallucinations.
 
-#### **Python**
-*   **Challenge**: Runtime Correctness & Asyncio.
-*   **Requirement**: Strict `asyncio` usage. No `time.sleep()` in async contexts (must use `await asyncio.sleep()`).
-*   **Why it fails**: Concurrency in Python is easy to deadlock if `semaphores` or `locks` are misused. Our stress tests aggressively target these flaws.
+#### **Medium Difficulty (Java, C#, Scala, Go)**
+*   **Challenge**: Verbosity, Strict Type Systems, Project Structures.
+*   **Requirement**: Correct imports, package declarations, and type safety.
+*   **Typical Failure**: Models often hallucinate APIs or miss specific import paths (e.g., `java.util.concurrent.ConcurrentHashMap`).
 
-#### **C++ / Rust (Upcoming)**
-*   **Challenge**: Memory Safety & Borrow Checker.
-*   **Requirement**: It must verify against the compiler.
-*   **Predicted Failure**: Most models will fail the "Build" step 90% of the time due to ownership issues (Rust) or template/header complexitites (C++).
+#### **Easier Difficulty (TypeScript, Python, Ruby, PHP)**
+*   **Challenge**: Logic errors, Concurrency, Dynamic Typing pitfalls.
+*   **Requirement**: Passing strict linters and stress tests.
+*   **Typical Failure**: Runtime errors during stress testing (race conditions).
+
+#### **Specialized (Bash, HTML, SQL)**
+*   **Challenge**: Syntax quirks (Bash), Semantic correctness (HTML), Data logic (SQL).
+*   **Requirement**: Output must produce exact expected behavior/looks.
 
 ### 4. Scenario Types
 We don't test "Reverse a Linked List". We test:
-*   **System Design**: Implement an LRU Cache with TTL.
-*   **Concurrency**: Implement an async Task Queue with Token Bucket rate limiting.
-*   **Systems Programming**: Parse a binary packet stream (Buffers, Endianness, Bit manipulation).
+*   **System Design**: Implement an LRU Cache with TTL (in 10+ languages).
+*   **Concurrency**: Implement an async Task Queue.
+*   **Systems Programming**: Parse a binary packet stream.
+*   **Data/Scripts**: Log rotation, SQL Analytics, Semantic HTML.
 
 ---
 
 ## Benchmark Summary
 
-Last updated: 2025-12-06T03:59:53.629Z
+Last updated: 2025-12-06T04:18:42.234Z
 
 | Model | Score | C++ | Rust | Hs | Scala | Java | C# | Go | TS | Py | Ruby | PHP | Bash | HTML | SQL | Latency (ms) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| qwen2.5-coder:0.5b | 20.0 | 20.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 179287 |
+| qwen2.5-coder:0.5b | 20.1 | 0.0 | 0.0 | 0.0 | 20.1 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 24241 |

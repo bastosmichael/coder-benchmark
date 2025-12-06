@@ -1,13 +1,13 @@
 [
   {
     "model": "qwen2.5-coder:0.5b",
-    "scenarioId": "cpp-lru-cache",
+    "scenarioId": "scala-lru-cache",
     "compileOk": false,
     "lintErrors": 0,
     "lintWarnings": 0,
     "testsPassed": 0,
     "testsFailed": 0,
     "instructionViolations": [],
-    "latencyMs": 179287
+    "latencyMs": 24241
   }
 ]

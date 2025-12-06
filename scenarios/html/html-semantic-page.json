@@ -1,0 +1,18 @@
+{
+    "id": "html-semantic-page",
+    "category": "frontend",
+    "description": "Create a semantic HTML5 landing page.",
+    "promptFile": "scenarios/html/html-semantic-page/prompt.md",
+    "templateDir": "scenarios/html/html-semantic-page/template",
+    "solutionFiles": [
+        "src/index.html"
+    ],
+    "commands": {
+        "build": "echo noop",
+        "lint": "echo noop",
+        "test": "node tests/validate.js"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

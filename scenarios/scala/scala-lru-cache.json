@@ -1,0 +1,18 @@
+{
+    "id": "scala-lru-cache",
+    "category": "generation",
+    "description": "Implement a generic LRU Cache in Scala.",
+    "promptFile": "scenarios/scala/scala-lru-cache/prompt.md",
+    "templateDir": "scenarios/scala/scala-lru-cache/template",
+    "solutionFiles": [
+        "src/LRUCache.scala"
+    ],
+    "commands": {
+        "build": "mkdir -p bin && scalac -d bin src/LRUCache.scala",
+        "lint": "echo noop",
+        "test": "scalac -d bin -classpath bin tests/TestLRU.scala && scala -classpath bin TestLRU"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

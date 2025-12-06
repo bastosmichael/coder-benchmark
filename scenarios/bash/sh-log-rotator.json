@@ -1,0 +1,18 @@
+{
+    "id": "sh-log-rotator",
+    "category": "scripting",
+    "description": "Implement a log rotation script in Bash.",
+    "promptFile": "scenarios/bash/sh-log-rotator/prompt.md",
+    "templateDir": "scenarios/bash/sh-log-rotator/template",
+    "solutionFiles": [
+        "src/rotate.sh"
+    ],
+    "commands": {
+        "build": "bash -n src/rotate.sh",
+        "lint": "echo noop",
+        "test": "bash tests/test_rotate.sh"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

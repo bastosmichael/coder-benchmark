@@ -1,0 +1,18 @@
+{
+    "id": "php-lru-cache",
+    "category": "generation",
+    "description": "Implement an LRU Cache in PHP.",
+    "promptFile": "scenarios/php/php-lru-cache/prompt.md",
+    "templateDir": "scenarios/php/php-lru-cache/template",
+    "solutionFiles": [
+        "src/LRUCache.php"
+    ],
+    "commands": {
+        "build": "php -l src/LRUCache.php",
+        "lint": "echo noop",
+        "test": "php tests/TestLRU.php"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "id": "sql-ecommerce-analytics",
+    "category": "database",
+    "description": "Write SQL queries for e-commerce analytics.",
+    "promptFile": "scenarios/sql/sql-ecommerce-analytics/prompt.md",
+    "templateDir": "scenarios/sql/sql-ecommerce-analytics/template",
+    "solutionFiles": [
+        "src/queries.sql"
+    ],
+    "commands": {
+        "build": "echo noop",
+        "lint": "echo noop",
+        "test": "bash tests/test_runner.sh"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

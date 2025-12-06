@@ -1,0 +1,18 @@
+{
+    "id": "hs-lru-cache",
+    "category": "generation",
+    "description": "Implement an LRU Cache in Haskell.",
+    "promptFile": "scenarios/haskell/hs-lru-cache/prompt.md",
+    "templateDir": "scenarios/haskell/hs-lru-cache/template",
+    "solutionFiles": [
+        "src/LRUCache.hs"
+    ],
+    "commands": {
+        "build": "ghc -O2 -c src/LRUCache.hs -o /dev/null",
+        "lint": "echo noop",
+        "test": "runghc -i src tests/TestLRU.hs"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

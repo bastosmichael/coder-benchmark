@@ -1,0 +1,18 @@
+{
+    "id": "java-lru-cache",
+    "category": "generation",
+    "description": "Implement an LRU Cache in Java.",
+    "promptFile": "scenarios/java/java-lru-cache/prompt.md",
+    "templateDir": "scenarios/java/java-lru-cache/template",
+    "solutionFiles": [
+        "src/LRUCache.java"
+    ],
+    "commands": {
+        "build": "mkdir -p bin && javac -d bin src/LRUCache.java",
+        "lint": "echo noop",
+        "test": "javac -d bin -cp bin tests/TestLRU.java && java -cp bin TestLRU"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}
