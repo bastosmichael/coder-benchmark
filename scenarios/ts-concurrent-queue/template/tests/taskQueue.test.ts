@@ -89,4 +89,37 @@ describe('TaskQueue', () => {
         // 200ms: 1 run
         expect(duration).toBeGreaterThan(150);
     });
+
+    it('HARD: Stress Test with mixed failures and high concurrency', async () => {
+        const queue = new TaskQueue<string>({ concurrency: 5, maxRetries: 2 });
+        const totalTasks = 100;
+        let completed = 0;
+
+        const tasks = Array.from({ length: totalTasks }, (_, i) => {
+            return queue.add(async () => {
+                // Random jitter
+                await new Promise(r => setTimeout(r, Math.random() * 10));
+
+                // Fail 20% of the time randomly
+                if (Math.random() < 0.2) throw new Error('Random fail');
+
+                return `done-${i}`;
+            }).then(() => {
+                completed++;
+                return 'ok';
+            }).catch(() => {
+                // If it failed after retries, that's acceptable for this test logic
+                // providing the queue didn't crash
+                return 'failed';
+            });
+        });
+
+        await Promise.all(tasks);
+
+        const status = queue.status();
+        // Everything should be fully drained
+        expect(status.running).toBe(0);
+        expect(status.pending).toBe(0);
+        // Note: completed in status might track successes, but we want to ensure stable state
+    });
 });

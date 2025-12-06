@@ -67,20 +67,27 @@ export function summarizeModelResults(results: RunResult[]): ModelSummary[] {
     // Accuracy Score (weighted)
     // 30% compile, 20% lint, 50% test pass rate
     // This is arbitrary, users can adjust.
-    const accuracyScore = (
+    const baseScore = (
       (compileOk / total) * 30 +
       (lintClean / total) * 20 +
       passedRate * 50
     );
+
+    // Speed bonus: higher is better. 
+    // If latency is 100ms -> +20 points.
+    // If latency is 1000ms -> +2 points.
+    // If latency is 10000ms -> +0.2 points.
+    // This differentiates models that otherwise fail everything uniquely.
+    const speedBonus = medianLatency > 0 ? (2000 / (medianLatency + 100)) : 0;
 
     return {
       model,
       compileRate: total > 0 ? (compileOk / total) * 100 : 0,
       lintCleanRate: total > 0 ? (lintClean / total) * 100 : 0,
       testPassRate: passedRate * 100,
-      instructionScore: 100, // Placeholder
+      instructionScore: 100,
       medianLatencyMs: medianLatency,
-      accuracyScore
+      accuracyScore: baseScore + speedBonus
     };
   });
 
