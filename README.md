@@ -256,8 +256,8 @@ We don't test "Reverse a Linked List". We test:
 
 ## Benchmark Summary
 
-Last updated: 2025-12-06T04:42:06.295Z
+Last updated: 2025-12-06T04:47:35.318Z
 
 | Model | Score | C++ | Rust | Hs | Scala | Java | C# | Go | TS | Py | Ruby | PHP | Bash | HTML | SQL | Latency (ms) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| qwen2.5-coder:0.5b | 27.5 | 20.1 | 0.1 | 20.1 | 20.3 | 20.2 | 20.1 | 0.2 | 20.1 | 40.1 | 50.1 | 20.1 | 50.1 | 50.1 | 50.5 | 20477 |
+| qwen2.5-coder:0.5b | 27.3 | 20.1 | 0.1 | 20.1 | 20.3 | 20.2 | 20.1 | 0.2 | 20.1 | 40.1 | 50.1 | 20.1 | 50.1 | 50.1 | 50.5 | 20477 |

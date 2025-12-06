@@ -81,7 +81,7 @@ export function summarizeModelResults(results: RunResult[]): ModelSummary[] {
     const latencies = modelResults.map(r => r.latencyMs).sort((a, b) => a - b);
     const medianLatency = latencies.length > 0 ? latencies[Math.floor(latencies.length / 2)] : 0;
 
-    const overallScore = calculateScore(modelResults);
+
 
     // Calculate per-language scores
     const cppScore = calculateScore(modelResults.filter(r => r.scenarioId.startsWith('cpp-')));
@@ -98,6 +98,44 @@ export function summarizeModelResults(results: RunResult[]): ModelSummary[] {
     const bashScore = calculateScore(modelResults.filter(r => r.scenarioId.startsWith('sh-')));
     const htmlScore = calculateScore(modelResults.filter(r => r.scenarioId.startsWith('html-')));
     const sqlScore = calculateScore(modelResults.filter(r => r.scenarioId.startsWith('sql-')));
+
+    // Calculate overall score as the average of language scores
+    const scores = [
+      cppScore, rustScore, haskellScore, scalaScore, javaScore, csharpScore, goScore,
+      tsScore, pyScore, rubyScore, phpScore, bashScore, htmlScore, sqlScore
+    ];
+    // Filter out languages that were not run (score 0 doesn't mean not run, but wait, calculateScore returns 0 if empty)
+    // Actually, calculateScore returns 0 if items.length === 0.
+    // If a model runs and gets 0, items.length is > 0.
+    // So we need to separate "not run" from "failed".
+    // Let's rely on finding if there were *any* results for that language prefix to count it.
+
+    let sumScores = 0;
+    let countLangs = 0;
+
+    const checkLang = (prefix: string, score: number) => {
+      if (modelResults.some(r => r.scenarioId.startsWith(prefix))) {
+        sumScores += score;
+        countLangs++;
+      }
+    };
+
+    checkLang('cpp-', cppScore);
+    checkLang('rs-', rustScore);
+    checkLang('hs-', haskellScore);
+    checkLang('scala-', scalaScore);
+    checkLang('java-', javaScore);
+    checkLang('cs-', csharpScore);
+    checkLang('go-', goScore);
+    checkLang('ts-', tsScore);
+    checkLang('py-', pyScore);
+    checkLang('rb-', rubyScore);
+    checkLang('php-', phpScore);
+    checkLang('sh-', bashScore);
+    checkLang('html-', htmlScore);
+    checkLang('sql-', sqlScore);
+
+    const overallScore = countLangs > 0 ? sumScores / countLangs : 0;
 
     return {
       model,

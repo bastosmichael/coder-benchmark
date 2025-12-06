@@ -11,14 +11,23 @@ export async function summarizeResults(file: string): Promise<void> {
 
     // Format for display
     const tableData = summaries.map(s => ({
-      Model: s.model,
-      'Compile %': s.compileRate.toFixed(1),
-      'Lint Clean %': s.lintCleanRate.toFixed(1),
-      'Test Pass %': s.testPassRate.toFixed(1),
+      'Model': s.model,
       'Score': s.accuracyScore.toFixed(1),
-      'TS Score': s.tsScore.toFixed(1),
-      'Py Score': s.pyScore.toFixed(1),
-      'Latency (ms)': s.medianLatencyMs
+      'C++': s.cppScore.toFixed(1),
+      'Rust': s.rustScore.toFixed(1),
+      'Hs': s.haskellScore.toFixed(1),
+      'Scala': s.scalaScore.toFixed(1),
+      'Java': s.javaScore.toFixed(1),
+      'C#': s.csharpScore.toFixed(1),
+      'Go': s.goScore.toFixed(1),
+      'TS': s.tsScore.toFixed(1),
+      'Py': s.pyScore.toFixed(1),
+      'Ruby': s.rubyScore.toFixed(1),
+      'PHP': s.phpScore.toFixed(1),
+      'Bash': s.bashScore.toFixed(1),
+      'HTML': s.htmlScore.toFixed(1),
+      'SQL': s.sqlScore.toFixed(1),
+      'Latency': s.medianLatencyMs
     }));
 
     console.table(tableData);
