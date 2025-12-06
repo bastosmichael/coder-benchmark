@@ -51,13 +51,43 @@ export async function runAll(options: RunOptions): Promise<void> {
 
   const results: RunResult[] = [];
 
+  // Stats tracking
+  const modelStats = new Map<string, { total: number; completed: number; durationsMs: number[] }>();
+
+  for (const model of models) {
+    modelStats.set(model, {
+      total: filteredScenarios.length,
+      completed: 0,
+      durationsMs: []
+    });
+  }
+
+  function formatDuration(ms: number): string {
+    const s = Math.round(ms / 1000);
+    if (s < 60) return `${s}s`;
+    const m = Math.floor(s / 60);
+    const rs = s % 60;
+    return `${m}m ${rs}s`;
+  }
+
   // Create a queue of tasks
   const tasks: (() => Promise<void>)[] = [];
 
   for (const model of models) {
     for (const scenario of filteredScenarios) {
       tasks.push(async () => {
-        console.log(`Running ${model} on ${scenario.config.id}...`);
+        const stats = modelStats.get(model)!;
+        const startTime = Date.now();
+
+        let etaMsg = '';
+        if (stats.completed > 0 && stats.durationsMs.length > 0) {
+          const avg = stats.durationsMs.reduce((a, b) => a + b, 0) / stats.durationsMs.length;
+          const remaining = stats.total - stats.completed;
+          const eta = avg * remaining;
+          etaMsg = ` (Avg: ${formatDuration(avg)}, ETA: ${formatDuration(eta)})`;
+        }
+
+        console.log(`[${stats.completed + 1}/${stats.total}] Running ${model} on ${scenario.config.id}...${etaMsg}`);
 
         const isTs = scenario.config.id.startsWith('ts-');
 
@@ -182,6 +212,11 @@ export async function runAll(options: RunOptions): Promise<void> {
         // Cleanup? 
         // For debugging we might want to keep it. But it fills disk.
         // await fs.rm(workspacePath, { recursive: true, force: true });
+
+        // Update stats
+        const duration = Date.now() - startTime;
+        stats.durationsMs.push(duration);
+        stats.completed++;
       });
     }
   }
