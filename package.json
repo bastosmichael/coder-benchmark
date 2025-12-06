@@ -8,17 +8,22 @@
     "cli": "node --loader ts-node/esm src/cli/index.ts",
     "prepare-models": "npm run cli -- prepare-models",
     "bench": "npm run cli -- run",
-    "summarize": "npm run cli -- summarize results.json"
+    "summarize": "npm run cli -- summarize results.json",
+    "test": "vitest run tests/"
   },
   "devDependencies": {
-    "typescript": "*",
-    "ts-node": "*",
+    "@eslint/js": "^9.39.1",
     "@types/node": "*",
-    "eslint": "*",
     "@typescript-eslint/eslint-plugin": "*",
     "@typescript-eslint/parser": "*",
-    "prettier": "*",
     "commander": "*",
-    "execa": "*"
+    "eslint": "*",
+    "execa": "*",
+    "globals": "^16.5.0",
+    "prettier": "*",
+    "ts-node": "*",
+    "typescript": "*",
+    "typescript-eslint": "^8.48.1",
+    "vitest": "^4.0.15"
   }
 }
