@@ -9,6 +9,12 @@ export default defineConfig({
             include: ['src/**/*.ts'],
             exclude: ['src/cli/index.ts', 'src/runner/types.ts'],
             reporter: ['text', 'json', 'html'],
+            thresholds: {
+                statements: 99,
+                branches: 89,
+                functions: 96,
+                lines: 100
+            }
         },
     },
 });
