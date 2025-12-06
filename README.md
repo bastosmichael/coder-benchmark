@@ -194,6 +194,65 @@ This is **not** a ranking of languages by difficulty for humans — it’s speci
 | **13** | **HTML/CSS**        | No runtime errors                                |
 | **14** | **SQL**             | Highly deterministic, models excel               |
 
+
+## Benchmark Methodology
+
+This benchmark is designed to be **unforgiving**. Unlike standard evaluations that check if an LLM can solve a LeetCode problem, this framework tests if an LLM can act as a **Senior Software Engineer**.
+
+### 1. The Core Loop
+For every model and every scenario, the framework performs a rigorous lifecycle check:
+1.  **Prompting**: The model is given a "Prompt File" (e.g., `prompt.md`) representing a ticket or requirements document. It must implement the solution in a specific file.
+2.  **Generation**: The model generates the full source code.
+3.  **Extraction**: The code block is parsed. If the model output is chatty or malformed, it counts as an instruction violation.
+4.  **Compilation (Build)**:
+    *   **TypeScript**: Runs `npm run build` (tsc) with `strict: true`, `noImplicitAny`, etc.
+    *   **Python**: Runs `python -m py_compile` to verify syntax validity.
+    *   **Compiled Langs (C++/Rust)**: Will run full compiler toolchains.
+5.  **Linting**:
+    *   **TypeScript**: Runs `eslint` with strict rules. The code must be idiomatic and clean.
+    *   **Python**: Runs `pylint`.
+6.  **Testing**:
+    *   Runs a robust test suite (Vitest for TS, Pytest for Python).
+    *   Tests include **Happy Paths**, **Edge Cases**, and **High-Concurrency Stress Tests**.
+    *   *Example*: The TaskQueue test hammers the implementation with 100 concurrent async tasks and random failures to ensure the model correctly implemented rate limiting and retries without race conditions.
+
+### 2. The Scoring System
+A model isn't "good" just because it output code. It is graded on a weighted curve:
+
+$$ Score = (Compile \times 30\%) + (LintClean \times 20\%) + (TestPass \times 50\%) + SpeedBonus $$
+
+*   **Compilation (30%)**: Did it generate valid syntax that respects the language's strict type system?
+*   **Lint Cleanliness (20%)**: Is the code messy, unused variables, or bad patterns?
+*   **Test Pass Rate (50%)**: Does it actually work under load?
+*   **Speed Bonus**: We reward low latency. `2000 / (LatencyMs + 100)`. A model that fails everything quickly is still useless, but a model that passes everything in 20ms is better than one taking 20s.
+
+### 3. Language Specifics & Nuances
+
+Different languages pose different challenges to LLMs. This benchmark attempts to normalize difficulty by enforcing "Production Grade" standards for each.
+
+#### **TypeScript**
+*   **Challenge**: The Type System.
+*   **Requirement**: `strict: true`. The model **cannot** use `any`. It must misuse generic types, partials, or optional chaining.
+*   **Why it fails**: Models often get lazy and cast to `any` or miss-handle `undefined` checks, causing the build step to fail immediately.
+
+#### **Python**
+*   **Challenge**: Runtime Correctness & Asyncio.
+*   **Requirement**: Strict `asyncio` usage. No `time.sleep()` in async contexts (must use `await asyncio.sleep()`).
+*   **Why it fails**: Concurrency in Python is easy to deadlock if `semaphores` or `locks` are misused. Our stress tests aggressively target these flaws.
+
+#### **C++ / Rust (Upcoming)**
+*   **Challenge**: Memory Safety & Borrow Checker.
+*   **Requirement**: It must verify against the compiler.
+*   **Predicted Failure**: Most models will fail the "Build" step 90% of the time due to ownership issues (Rust) or template/header complexitites (C++).
+
+### 4. Scenario Types
+We don't test "Reverse a Linked List". We test:
+*   **System Design**: Implement an LRU Cache with TTL.
+*   **Concurrency**: Implement an async Task Queue with Token Bucket rate limiting.
+*   **Systems Programming**: Parse a binary packet stream (Buffers, Endianness, Bit manipulation).
+
+---
+
 ## Benchmark Summary
 
 Last updated: 2025-12-06T03:50:00.245Z
