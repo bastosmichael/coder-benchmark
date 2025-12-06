@@ -218,9 +218,26 @@ For every model and every scenario, the framework performs a rigorous lifecycle 
     *   Runs robust test suites (Vitest, Pytest, XUnit, JUnit, Go Test, RSpec, etc.).
 
 ### 2. The Scoring System
-A model isn't "good" just because it output code. It is graded on a weighted curve:
 
-$$ Score = (Compile \times 30\%) + (LintClean \times 20\%) + (TestPass \times 50\%) + SpeedBonus $$
+Code generation is not binary (works/doesn't work). A model that generates compiling code is better than one that generates hallucinated syntax. A model that passes strict linting is better than one that produces "working" spaghetti code.
+
+The final **Score** is an average of the per-language scores. Each language score is calculated as follows:
+
+#### **A. Base Accuracy (0 - 100 points)**
+$$ Base = (CompileRate \times 30) + (LintCleanRate \times 20) + (TestPassRate \times 50) $$
+
+*   **Compile Rate (30%)**: Does the code build? (e.g., `tsc`, `javac`, `cargo build`).
+*   **Lint Clean Rate (20%)**: Is the code idiomatic? (e.g., `eslint`, `clippy`, `pylint`).
+*   **Test Pass Rate (50%)**: Do the unit/stress tests pass?
+
+#### **B. Speed Bonus**
+We reward low latency for valid solutions.
+$$ Bonus = \frac{2000}{MedianLatencyMs + 100} $$
+*   *Example*: 1 second latency ≈ +1.8 points. 20 seconds latency ≈ +0.1 points.
+
+#### **C. Overall Ranking Score**
+$$ OverallScore = \frac{\sum LanguageScores}{Count(Languages)} $$
+This ensures that being great at Python but terrible at Rust will drag your score down, enforcing a holistic measure of coding capability across the difficulty spectrum.
 
 ### 3. Language Specifics & Nuances
 
