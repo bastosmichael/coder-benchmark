@@ -19,7 +19,6 @@
   "codellama:7b",
   "sqlcoder:7b",
   "codeqwen:7b",
-  "deepseek-v2:7b",
   "dolphin-mixtral:8x7b",
   "opencoder:8b",
   "yi-coder:9b",

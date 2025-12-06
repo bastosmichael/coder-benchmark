@@ -1,0 +1,249 @@
+[
+  {
+    "model": "qwen2.5-coder:0.5b",
+    "scenarioId": "ts-lru-cache",
+    "compileOk": false,
+    "lintErrors": 0,
+    "lintWarnings": 0,
+    "testsPassed": 0,
+    "testsFailed": 0,
+    "instructionViolations": [
+      "No markdown code block found"
+    ],
+    "latencyMs": 3099
+  },
+  {
+    "model": "starcoder:1b",
+    "scenarioId": "ts-lru-cache",
+    "compileOk": false,
+    "lintErrors": 0,
+    "lintWarnings": 0,
+    "testsPassed": 0,
+    "testsFailed": 0,
+    "instructionViolations": [
+      "No markdown code block found"
+    ],
+    "latencyMs": 1625
+  },
+  {
+    "model": "deepseek-coder:1.3b",
+    "scenarioId": "ts-lru-cache",
+    "compileOk": false,
+    "lintErrors": 0,
+    "lintWarnings": 0,
+    "testsPassed": 0,
+    "testsFailed": 0,
+    "instructionViolations": [
+      "No markdown code block found"
+    ],
+    "latencyMs": 1703
+  },
+  {
+    "model": "opencoder:1.5b",
+    "scenarioId": "ts-lru-cache",
+    "compileOk": false,
+    "lintErrors": 0,
+    "lintWarnings": 0,
+    "testsPassed": 0,
+    "testsFailed": 0,
+    "instructionViolations": [
+      "No markdown code block found"
+    ],
+    "latencyMs": 2414
+  },
+  {
+    "model": "yi-coder:1.5b",
+    "scenarioId": "ts-lru-cache",
+    "compileOk": false,
+    "lintErrors": 0,
+    "lintWarnings": 0,
+    "testsPassed": 0,
+    "testsFailed": 0,
+    "instructionViolations": [
+      "No markdown code block found"
+    ],
+    "latencyMs": 1853
+  },
+  {
+    "model": "deepcoder:1.5b",
+    "scenarioId": "ts-lru-cache",
+    "compileOk": false,
+    "lintErrors": 0,
+    "lintWarnings": 0,
+    "testsPassed": 0,
+    "testsFailed": 0,
+    "instructionViolations": [
+      "No markdown code block found"
+    ],
+    "latencyMs": 3684
+  },
+  {
+    "model": "qwen2.5-coder:1.5b",
+    "scenarioId": "ts-lru-cache",
+    "compileOk": false,
+    "lintErrors": 0,
+    "lintWarnings": 0,
+    "testsPassed": 0,
+    "testsFailed": 0,
+    "instructionViolations": [
+      "No markdown code block found"
+    ],
+    "latencyMs": 3712
+  },
+  {
+    "model": "codegemma:2b",
+    "scenarioId": "ts-lru-cache",
+    "compileOk": false,
+    "lintErrors": 0,
+    "lintWarnings": 0,
+    "testsPassed": 0,
+    "testsFailed": 0,
+    "instructionViolations": [
+      "No markdown code block found"
+    ],
+    "latencyMs": 3496
+  },
+  {
+    "model": "qwen2.5-coder:3b",
+    "scenarioId": "ts-lru-cache",
+    "compileOk": false,
+    "lintErrors": 0,
+    "lintWarnings": 0,
+    "testsPassed": 0,
+    "testsFailed": 0,
+    "instructionViolations": [
+      "No markdown code block found"
+    ],
+    "latencyMs": 4173
+  },
+  {
+    "model": "starcoder2:3b",
+    "scenarioId": "ts-lru-cache",
+    "compileOk": false,
+    "lintErrors": 0,
+    "lintWarnings": 0,
+    "testsPassed": 0,
+    "testsFailed": 0,
+    "instructionViolations": [
+      "No markdown code block found"
+    ],
+    "latencyMs": 2796
+  },
+  {
+    "model": "starcoder:3b",
+    "scenarioId": "ts-lru-cache",
+    "compileOk": false,
+    "lintErrors": 0,
+    "lintWarnings": 0,
+    "testsPassed": 0,
+    "testsFailed": 0,
+    "instructionViolations": [
+      "No markdown code block found"
+    ],
+    "latencyMs": 2528
+  },
+  {
+    "model": "deepseek-coder:6.7b",
+    "scenarioId": "ts-lru-cache",
+    "compileOk": false,
+    "lintErrors": 0,
+    "lintWarnings": 0,
+    "testsPassed": 0,
+    "testsFailed": 0,
+    "instructionViolations": [
+      "No markdown code block found"
+    ],
+    "latencyMs": 4373
+  },
+  {
+    "model": "qwen2.5-coder:7b",
+    "scenarioId": "ts-lru-cache",
+    "compileOk": false,
+    "lintErrors": 0,
+    "lintWarnings": 0,
+    "testsPassed": 0,
+    "testsFailed": 0,
+    "instructionViolations": [
+      "No markdown code block found"
+    ],
+    "latencyMs": 6264
+  },
+  {
+    "model": "starcoder2:7b",
+    "scenarioId": "ts-lru-cache",
+    "compileOk": false,
+    "lintErrors": 0,
+    "lintWarnings": 0,
+    "testsPassed": 0,
+    "testsFailed": 0,
+    "instructionViolations": [
+      "No markdown code block found"
+    ],
+    "latencyMs": 4199
+  },
+  {
+    "model": "starcoder:7b",
+    "scenarioId": "ts-lru-cache",
+    "compileOk": false,
+    "lintErrors": 0,
+    "lintWarnings": 0,
+    "testsPassed": 0,
+    "testsFailed": 0,
+    "instructionViolations": [
+      "No markdown code block found"
+    ],
+    "latencyMs": 4148
+  },
+  {
+    "model": "dolphincoder:7b",
+    "scenarioId": "ts-lru-cache",
+    "compileOk": false,
+    "lintErrors": 0,
+    "lintWarnings": 0,
+    "testsPassed": 0,
+    "testsFailed": 0,
+    "instructionViolations": [
+      "No markdown code block found"
+    ],
+    "latencyMs": 4190
+  },
+  {
+    "model": "codellama:7b",
+    "scenarioId": "ts-lru-cache",
+    "compileOk": false,
+    "lintErrors": 0,
+    "lintWarnings": 0,
+    "testsPassed": 0,
+    "testsFailed": 0,
+    "instructionViolations": [
+      "No markdown code block found"
+    ],
+    "latencyMs": 4336
+  },
+  {
+    "model": "sqlcoder:7b",
+    "scenarioId": "ts-lru-cache",
+    "compileOk": false,
+    "lintErrors": 0,
+    "lintWarnings": 0,
+    "testsPassed": 0,
+    "testsFailed": 0,
+    "instructionViolations": [
+      "No markdown code block found"
+    ],
+    "latencyMs": 3721
+  },
+  {
+    "model": "codeqwen:7b",
+    "scenarioId": "ts-lru-cache",
+    "compileOk": false,
+    "lintErrors": 0,
+    "lintWarnings": 0,
+    "testsPassed": 0,
+    "testsFailed": 0,
+    "instructionViolations": [
+      "No markdown code block found"
+    ],
+    "latencyMs": 4104
+  }
+]

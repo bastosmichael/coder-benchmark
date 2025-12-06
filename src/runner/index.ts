@@ -58,7 +58,8 @@ export async function runAll(options: RunOptions): Promise<void> {
         console.log(`Running ${model} on ${scenario.config.id}...`);
 
         // 1. Setup Workspace
-        const workspacePath = await createWorkspace(model, scenario.config.id);
+        const relativeWorkspacePath = await createWorkspace(model, scenario.config.id);
+        const workspacePath = path.resolve(relativeWorkspacePath);
 
         // Copy base template (excluding node_modules)
         // We use fs.cp if available (Node 16.7+), otherwise fs.copyFile loop or execa 'cp'

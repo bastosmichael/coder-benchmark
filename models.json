@@ -1,5 +1,4 @@
 [
-  "qwen3-coder:866k",
   "qwen2.5-coder:0.5b",
   "starcoder:1b",
   "deepseek-coder:1.3b",
@@ -8,5 +7,15 @@
   "deepcoder:1.5b",
   "qwen2.5-coder:1.5b",
   "codegemma:2b",
-  "qwen2.5-coder:3b"
+  "qwen2.5-coder:3b",
+  "starcoder2:3b",
+  "starcoder:3b",
+  "deepseek-coder:6.7b",
+  "qwen2.5-coder:7b",
+  "starcoder2:7b",
+  "starcoder:7b",
+  "dolphincoder:7b",
+  "codellama:7b",
+  "sqlcoder:7b",
+  "codeqwen:7b"
 ]
