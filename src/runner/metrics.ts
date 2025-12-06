@@ -82,8 +82,22 @@ export function summarizeModelResults(results: RunResult[]): ModelSummary[] {
     const medianLatency = latencies.length > 0 ? latencies[Math.floor(latencies.length / 2)] : 0;
 
     const overallScore = calculateScore(modelResults);
+
+    // Calculate per-language scores
+    const cppScore = calculateScore(modelResults.filter(r => r.scenarioId.startsWith('cpp-')));
+    const rustScore = calculateScore(modelResults.filter(r => r.scenarioId.startsWith('rs-')));
+    const haskellScore = calculateScore(modelResults.filter(r => r.scenarioId.startsWith('hs-')));
+    const scalaScore = calculateScore(modelResults.filter(r => r.scenarioId.startsWith('scala-')));
+    const javaScore = calculateScore(modelResults.filter(r => r.scenarioId.startsWith('java-')));
+    const csharpScore = calculateScore(modelResults.filter(r => r.scenarioId.startsWith('cs-')));
+    const goScore = calculateScore(modelResults.filter(r => r.scenarioId.startsWith('go-')));
     const tsScore = calculateScore(modelResults.filter(r => r.scenarioId.startsWith('ts-')));
     const pyScore = calculateScore(modelResults.filter(r => r.scenarioId.startsWith('py-')));
+    const rubyScore = calculateScore(modelResults.filter(r => r.scenarioId.startsWith('rb-')));
+    const phpScore = calculateScore(modelResults.filter(r => r.scenarioId.startsWith('php-')));
+    const bashScore = calculateScore(modelResults.filter(r => r.scenarioId.startsWith('sh-')));
+    const htmlScore = calculateScore(modelResults.filter(r => r.scenarioId.startsWith('html-')));
+    const sqlScore = calculateScore(modelResults.filter(r => r.scenarioId.startsWith('sql-')));
 
     return {
       model,
@@ -93,8 +107,20 @@ export function summarizeModelResults(results: RunResult[]): ModelSummary[] {
       instructionScore: 100,
       medianLatencyMs: medianLatency,
       accuracyScore: overallScore,
+      cppScore,
+      rustScore,
+      haskellScore,
+      scalaScore,
+      javaScore,
+      csharpScore,
+      goScore,
       tsScore,
-      pyScore
+      pyScore,
+      rubyScore,
+      phpScore,
+      bashScore,
+      htmlScore,
+      sqlScore
     };
   });
 

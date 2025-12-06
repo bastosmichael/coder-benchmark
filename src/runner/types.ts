@@ -40,8 +40,21 @@ export interface ModelSummary {
   instructionScore: number;
   medianLatencyMs: number;
   accuracyScore: number;
-  tsScore: number;
-  pyScore: number;
+  // Language specific scores
+  cppScore: number;
+  rustScore: number;
+  haskellScore: number;
+  scalaScore: number;
+  javaScore: number;
+  csharpScore: number;
+  goScore: number;
+  tsScore: number; // Rank 8
+  pyScore: number; // Rank 9
+  rubyScore: number;
+  phpScore: number;
+  bashScore: number;
+  htmlScore: number;
+  sqlScore: number;
 }
 
 export interface PullModelsOptions {

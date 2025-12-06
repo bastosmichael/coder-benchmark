@@ -196,8 +196,8 @@ This is **not** a ranking of languages by difficulty for humans — it’s speci
 
 ## Benchmark Summary
 
-Last updated: 2025-12-06T03:44:27.788Z
+Last updated: 2025-12-06T03:50:00.245Z
 
-| Model | Compile % | Lint Clean % | Test Pass % | Score | TS Score | Py Score | Latency (ms) |
-|---|---|---|---|---|---|---|---|
-| qwen2.5-coder:0.5b | 50.0 | 100.0 | 0.0 | 35.1 | 20.1 | 50.1 | 26745 |
+| Model | Score | C++ | Rust | Hs | Scala | Java | C# | Go | TS | Py | Ruby | PHP | Bash | HTML | SQL | Latency (ms) |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| qwen2.5-coder:0.5b | 35.1 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 20.1 | 50.1 | 0.0 | 0.0 | 0.0 | 0.0 | 0.0 | 26745 |
