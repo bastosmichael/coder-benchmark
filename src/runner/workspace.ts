@@ -11,7 +11,8 @@ export interface CommandResult {
 }
 
 export async function createWorkspace(model: string, scenarioId: string): Promise<string> {
-  const workspacePath = path.join('.workdir', `${model}-${scenarioId}-${Date.now()}`);
+  const sanitizedModel = model.replace(/[^a-zA-Z0-9_-]/g, '_');
+  const workspacePath = path.join('.workdir', `${sanitizedModel}-${scenarioId}-${Date.now()}`);
   await fs.mkdir(workspacePath, { recursive: true });
   return workspacePath;
 }

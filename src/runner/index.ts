@@ -67,23 +67,24 @@ export async function runAll(options: RunOptions): Promise<void> {
 
         // Copy base template (excluding node_modules) ONLY for TS
         if (isTs) {
-          await execa('cp', ['-r', path.join(baseDir, 'package.json'), workspacePath]);
-          await execa('cp', ['-r', path.join(baseDir, 'tsconfig.json'), workspacePath]);
-          await execa('cp', ['-r', path.join(baseDir, 'vitest.config.ts'), workspacePath]);
-          await execa('cp', ['-r', path.join(baseDir, '.eslintrc.cjs'), workspacePath]);
-          await execa('cp', ['-r', path.join(baseDir, '.prettierrc'), workspacePath]);
+          await fs.cp(path.join(baseDir, 'package.json'), path.join(workspacePath, 'package.json'));
+          await fs.cp(path.join(baseDir, 'tsconfig.json'), path.join(workspacePath, 'tsconfig.json'));
+          await fs.cp(path.join(baseDir, 'vitest.config.ts'), path.join(workspacePath, 'vitest.config.ts'));
+          await fs.cp(path.join(baseDir, '.eslintrc.cjs'), path.join(workspacePath, '.eslintrc.cjs'));
+          await fs.cp(path.join(baseDir, '.prettierrc'), path.join(workspacePath, '.prettierrc'));
 
           // Symlink node_modules
           await fs.symlink(
             path.join(baseDir, 'node_modules'),
-            path.join(workspacePath, 'node_modules')
+            path.join(workspacePath, 'node_modules'),
+            'junction'
           );
         }
 
         // Copy scenario template
         const templateDir = path.resolve(scenario.config.templateDir);
         // Copy contents of templateDir to workspacePath
-        await execa('cp', ['-R', '.', workspacePath], { cwd: templateDir });
+        await fs.cp(templateDir, workspacePath, { recursive: true, force: true });
 
         // 2. Generate
         let generateResult;
