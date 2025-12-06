@@ -9,23 +9,42 @@ export interface GenerateResult {
 }
 
 export async function generate(options: GenerateOptions): Promise<GenerateResult> {
-  const start = Date.now();
-  const res = await fetch('http://localhost:11434/api/generate', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: options.model,
-      prompt: options.prompt,
-      stream: false,
-    }),
-  });
+  const maxRetries = 3;
+  let attempt = 0;
 
-  if (!res.ok) {
-    throw new Error(`Ollama generate failed with status ${res.status}`);
+  while (true) {
+    try {
+      const start = Date.now();
+      // Increase timeout by passing an abort signal with a longer timeout if needed, 
+      // but native fetch timeout depends on node version/undici default.
+      // Undici default is usually 300s, but headers timeout can be shorter.
+      // We'll rely on the retry.
+
+      const res = await fetch('http://localhost:11434/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: options.model,
+          prompt: options.prompt,
+          stream: false,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Ollama generate failed with status ${res.status}`);
+      }
+
+      const data = (await res.json()) as { response?: string };
+      const latencyMs = Date.now() - start;
+
+      return { response: data.response ?? '', latencyMs };
+    } catch (error: any) {
+      attempt++;
+      if (attempt >= maxRetries) {
+        throw error;
+      }
+      console.warn(`[Retry ${attempt}/${maxRetries}] Failed for ${options.model}: ${error.message}. Retrying in 2s...`);
+      await new Promise(r => setTimeout(r, 2000));
+    }
   }
-
-  const data = (await res.json()) as { response?: string };
-  const latencyMs = Date.now() - start;
-
-  return { response: data.response ?? '', latencyMs };
 }
