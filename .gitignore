@@ -1,6 +1,5 @@
 node_modules
+**/node_modules
 dist
 .workdir
 .DS_Store
-
-base-template/node_modules
