@@ -21,24 +21,27 @@ export async function summarizeResults(file: string, quiet: boolean = false): Pr
     const summaries = summarizeModelResults(results);
 
     // Format for display
+    // Format for display
+    const fmt = (val: number | null) => val !== null ? val.toFixed(0) : '-';
+
     const tableData = summaries.map(s => ({
       'Model': s.model,
       'Score': s.accuracyScore.toFixed(1),
-      'C++': s.cppScore.toFixed(0),
-      'Rust': s.rustScore.toFixed(0),
-      'Hs': s.haskellScore.toFixed(0),
-      'Scala': s.scalaScore.toFixed(0),
-      'Java': s.javaScore.toFixed(0),
-      'C#': s.csharpScore.toFixed(0),
-      'Go': s.goScore.toFixed(0),
-      'Dart': s.dartScore.toFixed(0),
-      'TS': s.tsScore.toFixed(0),
-      'Py': s.pyScore.toFixed(0),
-      'Ruby': s.rubyScore.toFixed(0),
-      'PHP': s.phpScore.toFixed(0),
-      'Bash': s.bashScore.toFixed(0),
-      'HTML': s.htmlScore.toFixed(0),
-      'SQL': s.sqlScore.toFixed(0),
+      'C++': fmt(s.cppScore),
+      'Rust': fmt(s.rustScore),
+      'Hs': fmt(s.haskellScore),
+      'Scala': fmt(s.scalaScore),
+      'Java': fmt(s.javaScore),
+      'C#': fmt(s.csharpScore),
+      'Go': fmt(s.goScore),
+      'Dart': fmt(s.dartScore),
+      'TS': fmt(s.tsScore),
+      'Py': fmt(s.pyScore),
+      'Ruby': fmt(s.rubyScore),
+      'PHP': fmt(s.phpScore),
+      'Bash': fmt(s.bashScore),
+      'HTML': fmt(s.htmlScore),
+      'SQL': fmt(s.sqlScore),
       'Latency': s.medianLatencyMs
     }));
 
@@ -70,7 +73,8 @@ export async function summarizeResults(file: string, quiet: boolean = false): Pr
     markdown += '|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n';
 
     for (const s of summaries) {
-      markdown += `| ${s.model} | ${s.accuracyScore.toFixed(1)} | ${s.cppScore.toFixed(0)} | ${s.rustScore.toFixed(0)} | ${s.haskellScore.toFixed(0)} | ${s.scalaScore.toFixed(0)} | ${s.javaScore.toFixed(0)} | ${s.csharpScore.toFixed(0)} | ${s.goScore.toFixed(0)} | ${s.dartScore.toFixed(0)} | ${s.tsScore.toFixed(0)} | ${s.pyScore.toFixed(0)} | ${s.rubyScore.toFixed(0)} | ${s.phpScore.toFixed(0)} | ${s.bashScore.toFixed(0)} | ${s.htmlScore.toFixed(0)} | ${s.sqlScore.toFixed(0)} | ${s.medianLatencyMs} |\n`;
+      const f = (v: number | null) => v !== null ? v.toFixed(0) : '-';
+      markdown += `| ${s.model} | ${s.accuracyScore.toFixed(1)} | ${f(s.cppScore)} | ${f(s.rustScore)} | ${f(s.haskellScore)} | ${f(s.scalaScore)} | ${f(s.javaScore)} | ${f(s.csharpScore)} | ${f(s.goScore)} | ${f(s.dartScore)} | ${f(s.tsScore)} | ${f(s.pyScore)} | ${f(s.rubyScore)} | ${f(s.phpScore)} | ${f(s.bashScore)} | ${f(s.htmlScore)} | ${f(s.sqlScore)} | ${s.medianLatencyMs} |\n`;
     }
 
     // Read README
