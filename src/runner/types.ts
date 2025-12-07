@@ -73,6 +73,10 @@ export interface RunOptions {
   filterScenario?: string;
   sequentialModels?: boolean;
   limit?: number;
+  numGpu?: number;
+  mainGpu?: number;
+  numCtx?: number;
+  numThread?: number;
 }
 export interface SystemInfo {
   platform: string;

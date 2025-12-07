@@ -1,6 +1,12 @@
 export interface GenerateOptions {
   model: string;
   prompt: string;
+  options?: {
+    num_gpu?: number;
+    main_gpu?: number;
+    num_ctx?: number;
+    num_thread?: number;
+  };
 }
 
 export interface GenerateResult {
@@ -27,6 +33,7 @@ export async function generate(options: GenerateOptions): Promise<GenerateResult
           model: options.model,
           prompt: options.prompt,
           stream: false,
+          options: options.options,
         }),
       });
 

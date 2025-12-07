@@ -118,7 +118,13 @@ export async function runAll(options: RunOptions): Promise<void> {
     try {
       generateResult = await generate({
         model,
-        prompt: scenario.promptText
+        prompt: scenario.promptText,
+        options: {
+          num_gpu: options.numGpu,
+          main_gpu: options.mainGpu,
+          num_ctx: options.numCtx,
+          num_thread: options.numThread,
+        }
       });
     } catch (e) {
       console.error(`Generation failed for ${model}/${scenario.config.id}:`, e);

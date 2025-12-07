@@ -2,17 +2,50 @@
 
 Local Ollama coder model benchmark for TypeScript.
 
+## Usage
+`npm install`
+Copy the example.env to .env and fill in the values.
+`cp example.env .env`
+
+### Basic Usage
+1. Prepare models (pulls from Ollama):
 ```bash
-npm install
-
 npm run prepare-models
-npm run prepare-models -- --limit 5
+# Or limit to first 10 models:
+npm run prepare-models -- --limit 10
+```
 
+2. Run Benchmarks:
+```bash
+# Run all models
 npm run bench
-npm run bench -- --limit 10
-npm run bench -- --limit 5 --sequential-models --concurrency 5
 
+# Run first 10 models
+npm run bench -- --limit 10
+
+# Run sequentially (one model at a time) with parallel scenarios
+npm run bench -- --sequential-models --concurrency 5
+
+# Advanced GPU configuration
+npm run bench -- --main-gpu 0 --num-gpu 999
+```
+
+3. Summarize Results:
+```bash
 npm run summarize
+```
+
+### Max Performance Mode
+To maximize throughput, we provide a helper script that configures a dedicated Ollama instance with high parallelism parameters (`OLLAMA_NUM_PARALLEL` and `OLLAMA_MAX_LOADED_MODELS`).
+
+**Warning**: This will stop any running Ollama instances.
+
+```bash
+# Runs with optimized parallel settings (default: limit 10, concurrency 10)
+npm run bench-max
+
+# You can override defaults:
+npm run bench-max -- --limit 50 --concurrency 20
 ```
 
 ## HARD → EASY: LLM Code Generation + Automated Testing Difficulty Ranking

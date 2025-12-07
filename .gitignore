@@ -4,3 +4,4 @@ dist
 .workdir
 .DS_Store
 results.json
+ollama.log

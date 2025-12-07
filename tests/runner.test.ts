@@ -82,7 +82,16 @@ describe('runner', () => {
         });
 
         // Verifications
-        expect(modelClient.generate).toHaveBeenCalledWith({ model: 'test-model', prompt: 'Implement this' });
+        expect(modelClient.generate).toHaveBeenCalledWith({
+            model: 'test-model',
+            prompt: 'Implement this',
+            options: {
+                main_gpu: undefined,
+                num_ctx: undefined,
+                num_gpu: undefined,
+                num_thread: undefined,
+            }
+        });
         expect(workspace.runCommand).toHaveBeenCalledWith('build', expect.anything());
         expect(workspace.runCommand).toHaveBeenCalledWith('lint', expect.anything());
         expect(workspace.runCommand).toHaveBeenCalledWith('test', expect.anything());
@@ -175,8 +184,8 @@ describe('runner', () => {
     it('filters models and scenarios', async () => {
         vi.mocked(fs.readFile).mockResolvedValue(JSON.stringify(['m1', 'm2']));
         vi.mocked(scenarioLoader.loadScenarios).mockResolvedValue([
-            { config: { id: 's1', promptFile: '', templateDir: '', solutionFiles: ['sol.ts'], commands: {} as any, constraints: {} as any }, promptText: '' },
-            { config: { id: 's2', promptFile: '', templateDir: '', solutionFiles: ['sol.ts'], commands: {} as any, constraints: {} as any }, promptText: '' }
+            { config: { id: 's1', category: '', description: '', promptFile: '', templateDir: '', solutionFiles: ['sol.ts'], commands: {} as any, constraints: {} as any }, promptText: '' },
+            { config: { id: 's2', category: '', description: '', promptFile: '', templateDir: '', solutionFiles: ['sol.ts'], commands: {} as any, constraints: {} as any }, promptText: '' }
         ]);
         vi.mocked(fs.access).mockResolvedValue(undefined); // base template exists
         vi.mocked(workspace.createWorkspace).mockResolvedValue('/wk');
@@ -233,7 +242,7 @@ describe('runner', () => {
         vi.mocked(fs.readFile).mockResolvedValue(JSON.stringify(['model']));
         vi.mocked(scenarioLoader.loadScenarios).mockResolvedValue([
             {
-                config: { id: 'py-fallback', promptFile: '', templateDir: '', solutionFiles: ['sol.py'], commands: {} as any, constraints: {} as any },
+                config: { id: 'py-fallback', category: '', description: '', promptFile: '', templateDir: '', solutionFiles: ['sol.py'], commands: {} as any, constraints: {} as any },
                 promptText: ''
             }
         ]);
@@ -264,7 +273,7 @@ describe('runner', () => {
         vi.mocked(fs.readFile).mockResolvedValue(JSON.stringify(['model']));
         vi.mocked(scenarioLoader.loadScenarios).mockResolvedValue([
             {
-                config: { id: 'ts-fallback', promptFile: '', templateDir: '', solutionFiles: ['sol.ts'], commands: {} as any, constraints: {} as any },
+                config: { id: 'ts-fallback', category: '', description: '', promptFile: '', templateDir: '', solutionFiles: ['sol.ts'], commands: {} as any, constraints: {} as any },
                 promptText: ''
             }
         ]);

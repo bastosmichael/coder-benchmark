@@ -29,9 +29,17 @@ program
   .option('--filter-scenario <pattern>', 'Only run scenarios matching pattern')
   .option('--sequential-models', 'Run models sequentially, parallelizing scenarios within each model')
   .option('--limit <number>', 'Limit number of models to run')
+  .option('--num-gpu <number>', 'Number of layers to offload to GPU')
+  .option('--main-gpu <number>', 'Index of main GPU to use')
+  .option('--num-ctx <number>', 'Context window size')
+  .option('--num-thread <number>', 'Number of threads to use')
   .action(async (options) => {
     const concurrency = Number.parseInt(options.concurrency, 10);
     const limit = options.limit ? Number.parseInt(options.limit, 10) : undefined;
+    const numGpu = options.numGpu ? Number.parseInt(options.numGpu, 10) : undefined;
+    const mainGpu = options.mainGpu ? Number.parseInt(options.mainGpu, 10) : undefined;
+    const numCtx = options.numCtx ? Number.parseInt(options.numCtx, 10) : undefined;
+    const numThread = options.numThread ? Number.parseInt(options.numThread, 10) : undefined;
 
     await runAll({
       modelsFile: options.models,
@@ -42,6 +50,10 @@ program
       filterScenario: options.filterScenario,
       sequentialModels: options.sequentialModels,
       limit: limit && !Number.isNaN(limit) ? limit : undefined,
+      numGpu: numGpu && !Number.isNaN(numGpu) ? numGpu : undefined,
+      mainGpu: mainGpu && !Number.isNaN(mainGpu) ? mainGpu : undefined,
+      numCtx: numCtx && !Number.isNaN(numCtx) ? numCtx : undefined,
+      numThread: numThread && !Number.isNaN(numThread) ? numThread : undefined,
     });
   });
 

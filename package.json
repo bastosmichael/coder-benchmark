@@ -8,6 +8,7 @@
     "cli": "node --loader ts-node/esm src/cli/index.ts",
     "prepare-models": "npm run cli -- prepare-models",
     "bench": "npm run cli -- run",
+    "bench-max": "node --loader ts-node/esm scripts/bench-max.ts",
     "summarize": "npm run cli -- summarize results.json",
     "test": "vitest run tests/"
   },
