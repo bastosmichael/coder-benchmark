@@ -4,8 +4,14 @@ Local Ollama coder model benchmark for TypeScript.
 
 ```bash
 npm install
+
 npm run prepare-models
+npm run prepare-models -- --limit 5
+
 npm run bench
+npm run bench -- --limit 10
+npm run bench -- --limit 5 --sequential-models --concurrency 5
+
 npm run summarize
 ```
 
@@ -298,3 +304,21 @@ Last updated: 2025-12-06T15:27:19.349Z
 | Model | Score | C++ | Rust | Hs | Scala | Java | C# | Go | Dart | TS | Py | Ruby | PHP | Bash | HTML | SQL | Latency (ms) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | qwen2.5-coder:0.5b | 20.2 | 20 | 0 | 20 | 20 | 20 | 20 | 0 | 0 | 20 | 20 | 20 | 20 | 20 | 50 | 51 | 24122 |
+
+
+## Benchmark Summary 
+
+Last updated: 2025-12-06T17:21:06.125Z 
+
+** System Environment **
+- ** OS **: darwin 25.1.0 (x64) 
+- ** CPU **: Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz (16 cores) 
+- ** Memory **: 64.00 GB
+
+
+| Model | Score | C++ | Rust | Hs | Scala | Java | C# | Go | Dart | TS | Py | Ruby | PHP | Bash | HTML | SQL | Latency (ms) |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| starcoder:1b | 28.6 | 20 | 30 | 20 | 21 | 21 | 21 | 1 | 21 | 20 | 30 | 51 | 21 | 50 | 51 | 50 | 3773 |
+| deepseek-coder:1.3b | 24.9 | 20 | 0 | 20 | 20 | 20 | 20 | 20 | 0 | 13 | 20 | 50 | 20 | 50 | 50 | 50 | 45212 |
+| qwen2.5-coder:0.5b | 23.5 | 20 | 0 | 20 | 20 | 20 | 20 | 0 | 0 | 20 | 40 | 50 | 20 | 20 | 50 | 50 | 18249 |
+ 

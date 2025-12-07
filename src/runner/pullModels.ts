@@ -14,8 +14,10 @@ export async function pullModelsCommand(options: PullModelsOptions): Promise<voi
     throw new Error(`Expected ${options.modelsFile} to contain an array of model names.`);
   }
 
-  for (const [index, model] of models.entries()) {
-    console.log(`Pulling model ${model} (${index + 1}/${models.length})...`);
+  const modelsToPull = options.limit ? models.slice(0, options.limit) : models;
+
+  for (const [index, model] of modelsToPull.entries()) {
+    console.log(`Pulling model ${model} (${index + 1}/${modelsToPull.length})...`);
     try {
       await execa('ollama', ['pull', model], { stdio: 'inherit' });
     } catch (error) {

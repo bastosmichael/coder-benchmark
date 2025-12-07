@@ -43,7 +43,8 @@ export async function runAll(options: RunOptions): Promise<void> {
   const modelPattern = options.filterModel ? new RegExp(options.filterModel) : null;
   const scenarioPattern = options.filterScenario ? new RegExp(options.filterScenario) : null;
 
-  const models = modelPattern ? modelList.filter((name) => modelPattern.test(name)) : modelList;
+  const initialModels = options.limit ? modelList.slice(0, options.limit) : modelList;
+  const models = modelPattern ? initialModels.filter((name) => modelPattern.test(name)) : initialModels;
   const scenarios = await loadScenarios(options.scenariosDir);
   const filteredScenarios = scenarioPattern
     ? scenarios.filter((scenario) => scenarioPattern.test(scenario.config.id))
@@ -70,156 +71,150 @@ export async function runAll(options: RunOptions): Promise<void> {
     return `${m}m ${rs}s`;
   }
 
-  // Create a queue of tasks
-  const tasks: (() => Promise<void>)[] = [];
+  /* Create task helper */
+  const createRunTask = (model: string, scenario: typeof filteredScenarios[0]) => async () => {
+    const stats = modelStats.get(model)!;
+    const startTime = Date.now();
 
-  for (const model of models) {
-    for (const scenario of filteredScenarios) {
-      tasks.push(async () => {
-        const stats = modelStats.get(model)!;
-        const startTime = Date.now();
-
-        let etaMsg = '';
-        if (stats.completed > 0 && stats.durationsMs.length > 0) {
-          const avg = stats.durationsMs.reduce((a, b) => a + b, 0) / stats.durationsMs.length;
-          const remaining = stats.total - stats.completed;
-          const eta = avg * remaining;
-          etaMsg = ` (Avg: ${formatDuration(avg)}, ETA: ${formatDuration(eta)})`;
-        }
-
-        console.log(`[${stats.completed + 1}/${stats.total}] Running ${model} on ${scenario.config.id}...${etaMsg}`);
-
-        const isTs = scenario.config.id.startsWith('ts-');
-
-        // 1. Setup Workspace
-        const relativeWorkspacePath = await createWorkspace(model, scenario.config.id);
-        const workspacePath = path.resolve(relativeWorkspacePath);
-
-        // Copy base template (excluding node_modules) ONLY for TS
-        if (isTs) {
-          await fs.cp(path.join(baseDir, 'package.json'), path.join(workspacePath, 'package.json'));
-          await fs.cp(path.join(baseDir, 'tsconfig.json'), path.join(workspacePath, 'tsconfig.json'));
-          await fs.cp(path.join(baseDir, 'vitest.config.ts'), path.join(workspacePath, 'vitest.config.ts'));
-          await fs.cp(path.join(baseDir, '.eslintrc.cjs'), path.join(workspacePath, '.eslintrc.cjs'));
-          await fs.cp(path.join(baseDir, '.prettierrc'), path.join(workspacePath, '.prettierrc'));
-
-          // Symlink node_modules
-          await fs.symlink(
-            path.join(baseDir, 'node_modules'),
-            path.join(workspacePath, 'node_modules'),
-            'junction'
-          );
-        }
-
-        // Copy scenario template
-        const templateDir = path.resolve(scenario.config.templateDir);
-        // Copy contents of templateDir to workspacePath
-        await fs.cp(templateDir, workspacePath, { recursive: true, force: true });
-
-        // 2. Generate
-        let generateResult;
-        try {
-          generateResult = await generate({
-            model,
-            prompt: scenario.promptText
-          });
-        } catch (e) {
-          console.error(`Generation failed for ${model}/${scenario.config.id}:`, e);
-          results.push({
-            model,
-            scenarioId: scenario.config.id,
-            compileOk: false,
-            lintErrors: 0,
-            lintWarnings: 0,
-            testsPassed: 0,
-            testsFailed: 0,
-            instructionViolations: ['Generation failed'],
-            latencyMs: 0
-          });
-          return;
-        }
-
-        const { code, instructionViolations } = extractCode(generateResult.response, scenario.config.constraints);
-
-        // Write code to solution file
-        // Default to first solution file
-        const targetFile = scenario.config.solutionFiles[0];
-        const fullTargetPath = path.join(workspacePath, targetFile);
-        await fs.writeFile(fullTargetPath, code);
-
-        // 3. Run Checks
-        // Build
-        const buildRes = await runCommand(scenario.config.commands.build, workspacePath);
-        const compileOk = buildRes.ok;
-
-        // Lint
-        const lintRes = await runCommand(scenario.config.commands.lint, workspacePath);
-
-        let lintErrors = 0;
-        let lintWarnings = 0;
-
-        if (isTs) {
-          // Parse lint output (eslint)
-          const lintMatch = lintRes.stdout.match(/(\d+) problems? \((\d+) errors?, (\d+) warnings?\)/);
-          if (lintMatch) {
-            lintErrors = parseInt(lintMatch[2], 10);
-            lintWarnings = parseInt(lintMatch[3], 10);
-          } else if (lintRes.exitCode !== 0) {
-            lintErrors = (lintRes.stdout.match(/error/gi) || []).length;
-            lintWarnings = (lintRes.stdout.match(/warning/gi) || []).length;
-          }
-        } else {
-          // Python lint (pylint) simplistics
-          if (lintRes.exitCode !== 0) {
-            // If it failed, assume errors. 
-            // Count lines containing ': error'?
-            lintErrors = (lintRes.stdout.match(/error/gi) || []).length;
-            if (lintErrors === 0) lintErrors = 1; // fallback
-          }
-        }
-
-        // Test
-        // Vitest output: "Tests  2 failed | 1 passed (3)"
-        // or "Tests  3 passed (3)"
-        const testRes = await runCommand(scenario.config.commands.test, workspacePath);
-
-        let testsPassed = 0;
-        let testsFailed = 0;
-
-        const passedMatch = testRes.stdout.match(/(\d+) passed/);
-        const failedMatch = testRes.stdout.match(/(\d+) failed/);
-
-        if (passedMatch) testsPassed = parseInt(passedMatch[1], 10);
-        if (failedMatch) testsFailed = parseInt(failedMatch[1], 10);
-
-        // If compilation failed, tests probably failed or didn't run.
-        if (!compileOk && testsPassed === 0 && testsFailed === 0) {
-          // Check if build error output suggests anything
-        }
-
-        results.push({
-          model,
-          scenarioId: scenario.config.id,
-          compileOk,
-          lintErrors,
-          lintWarnings,
-          testsPassed,
-          testsFailed,
-          instructionViolations,
-          latencyMs: generateResult.latencyMs
-        });
-
-        // Cleanup? 
-        // For debugging we might want to keep it. But it fills disk.
-        // await fs.rm(workspacePath, { recursive: true, force: true });
-
-        // Update stats
-        const duration = Date.now() - startTime;
-        stats.durationsMs.push(duration);
-        stats.completed++;
-      });
+    let etaMsg = '';
+    if (stats.completed > 0 && stats.durationsMs.length > 0) {
+      const avg = stats.durationsMs.reduce((a, b) => a + b, 0) / stats.durationsMs.length;
+      const remaining = stats.total - stats.completed;
+      const eta = avg * remaining;
+      etaMsg = ` (Avg: ${formatDuration(avg)}, ETA: ${formatDuration(eta)})`;
     }
-  }
+
+    console.log(`[${stats.completed + 1}/${stats.total}] Running ${model} on ${scenario.config.id}...${etaMsg}`);
+
+    const isTs = scenario.config.id.startsWith('ts-');
+
+    // 1. Setup Workspace
+    const relativeWorkspacePath = await createWorkspace(model, scenario.config.id);
+    const workspacePath = path.resolve(relativeWorkspacePath);
+
+    // Copy base template (excluding node_modules) ONLY for TS
+    if (isTs) {
+      await fs.cp(path.join(baseDir, 'package.json'), path.join(workspacePath, 'package.json'));
+      await fs.cp(path.join(baseDir, 'tsconfig.json'), path.join(workspacePath, 'tsconfig.json'));
+      await fs.cp(path.join(baseDir, 'vitest.config.ts'), path.join(workspacePath, 'vitest.config.ts'));
+      await fs.cp(path.join(baseDir, '.eslintrc.cjs'), path.join(workspacePath, '.eslintrc.cjs'));
+      await fs.cp(path.join(baseDir, '.prettierrc'), path.join(workspacePath, '.prettierrc'));
+
+      // Symlink node_modules
+      await fs.symlink(
+        path.join(baseDir, 'node_modules'),
+        path.join(workspacePath, 'node_modules'),
+        'junction'
+      );
+    }
+
+    // Copy scenario template
+    const templateDir = path.resolve(scenario.config.templateDir);
+    // Copy contents of templateDir to workspacePath
+    await fs.cp(templateDir, workspacePath, { recursive: true, force: true });
+
+    // 2. Generate
+    let generateResult;
+    try {
+      generateResult = await generate({
+        model,
+        prompt: scenario.promptText
+      });
+    } catch (e) {
+      console.error(`Generation failed for ${model}/${scenario.config.id}:`, e);
+      results.push({
+        model,
+        scenarioId: scenario.config.id,
+        compileOk: false,
+        lintErrors: 0,
+        lintWarnings: 0,
+        testsPassed: 0,
+        testsFailed: 0,
+        instructionViolations: ['Generation failed'],
+        latencyMs: 0
+      });
+      return;
+    }
+
+    const { code, instructionViolations } = extractCode(generateResult.response, scenario.config.constraints);
+
+    // Write code to solution file
+    // Default to first solution file
+    const targetFile = scenario.config.solutionFiles[0];
+    const fullTargetPath = path.join(workspacePath, targetFile);
+    await fs.writeFile(fullTargetPath, code);
+
+    // 3. Run Checks
+    // Build
+    const buildRes = await runCommand(scenario.config.commands.build, workspacePath);
+    const compileOk = buildRes.ok;
+
+    // Lint
+    const lintRes = await runCommand(scenario.config.commands.lint, workspacePath);
+
+    let lintErrors = 0;
+    let lintWarnings = 0;
+
+    if (isTs) {
+      // Parse lint output (eslint)
+      const lintMatch = lintRes.stdout.match(/(\d+) problems? \((\d+) errors?, (\d+) warnings?\)/);
+      if (lintMatch) {
+        lintErrors = parseInt(lintMatch[2], 10);
+        lintWarnings = parseInt(lintMatch[3], 10);
+      } else if (lintRes.exitCode !== 0) {
+        lintErrors = (lintRes.stdout.match(/error/gi) || []).length;
+        lintWarnings = (lintRes.stdout.match(/warning/gi) || []).length;
+      }
+    } else {
+      // Python lint (pylint) simplistics
+      if (lintRes.exitCode !== 0) {
+        // If it failed, assume errors. 
+        // Count lines containing ': error'?
+        lintErrors = (lintRes.stdout.match(/error/gi) || []).length;
+        if (lintErrors === 0) lintErrors = 1; // fallback
+      }
+    }
+
+    // Test
+    // Vitest output: "Tests  2 failed | 1 passed (3)"
+    // or "Tests  3 passed (3)"
+    const testRes = await runCommand(scenario.config.commands.test, workspacePath);
+
+    let testsPassed = 0;
+    let testsFailed = 0;
+
+    const passedMatch = testRes.stdout.match(/(\d+) passed/);
+    const failedMatch = testRes.stdout.match(/(\d+) failed/);
+
+    if (passedMatch) testsPassed = parseInt(passedMatch[1], 10);
+    if (failedMatch) testsFailed = parseInt(failedMatch[1], 10);
+
+    // If compilation failed, tests probably failed or didn't run.
+    if (!compileOk && testsPassed === 0 && testsFailed === 0) {
+      // Check if build error output suggests anything
+    }
+
+    results.push({
+      model,
+      scenarioId: scenario.config.id,
+      compileOk,
+      lintErrors,
+      lintWarnings,
+      testsPassed,
+      testsFailed,
+      instructionViolations,
+      latencyMs: generateResult.latencyMs
+    });
+
+    // Cleanup? 
+    // For debugging we might want to keep it. But it fills disk.
+    // await fs.rm(workspacePath, { recursive: true, force: true });
+
+    // Update stats
+    const duration = Date.now() - startTime;
+    stats.durationsMs.push(duration);
+    stats.completed++;
+  };
 
   /* ... */
   // Capture System Info UP FRONT so we can save it incrementally
@@ -261,26 +256,44 @@ export async function runAll(options: RunOptions): Promise<void> {
 
   // Execute with concurrency
   const concurrency = options.concurrency || 1;
-  const activeWorkers: Promise<void>[] = [];
 
-  // Use a simple iterator
-  const queue = [...tasks];
+  const runQueue = async (tasksToRun: (() => Promise<void>)[]) => {
+    const activeWorkers: Promise<void>[] = [];
+    // Use a simple iterator
+    const queue = [...tasksToRun];
 
-  const worker = async () => {
-    while (queue.length > 0) {
-      const task = queue.shift();
-      if (task) {
-        await task();
-        await saveProgress();
+    const worker = async () => {
+      while (queue.length > 0) {
+        const task = queue.shift();
+        if (task) {
+          await task();
+          await saveProgress();
+        }
       }
+    };
+
+    for (let i = 0; i < concurrency; i++) {
+      activeWorkers.push(worker());
     }
+
+    await Promise.all(activeWorkers);
   };
 
-  for (let i = 0; i < concurrency; i++) {
-    activeWorkers.push(worker());
+  if (options.sequentialModels) {
+    for (const model of models) {
+      const modelTasks = filteredScenarios.map((s) => createRunTask(model, s));
+      await runQueue(modelTasks);
+    }
+  } else {
+    // Flatten all
+    const allTasks: (() => Promise<void>)[] = [];
+    for (const model of models) {
+      for (const s of filteredScenarios) {
+        allTasks.push(createRunTask(model, s));
+      }
+    }
+    await runQueue(allTasks);
   }
-
-  await Promise.all(activeWorkers);
 
   // Final save and summary
   await saveProgress();

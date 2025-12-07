@@ -61,6 +61,7 @@ export interface ModelSummary {
 export interface PullModelsOptions {
   modelsFile: string;
   delayMs: number;
+  limit?: number;
 }
 
 export interface RunOptions {
@@ -70,6 +71,8 @@ export interface RunOptions {
   concurrency: number;
   filterModel?: string;
   filterScenario?: string;
+  sequentialModels?: boolean;
+  limit?: number;
 }
 export interface SystemInfo {
   platform: string;

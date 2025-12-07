@@ -8,11 +8,14 @@ program
   .command('prepare-models')
   .option('--models <file>', 'Models file', 'models.json')
   .option('--delay-ms <number>', 'Delay between pulls in milliseconds', '10000')
+  .option('--limit <number>', 'Limit number of models to prepare')
   .action(async (options) => {
     const delay = Number.parseInt(options.delayMs, 10);
+    const limit = options.limit ? Number.parseInt(options.limit, 10) : undefined;
     await pullModelsCommand({
       modelsFile: options.models,
       delayMs: Number.isNaN(delay) ? 10000 : delay,
+      limit: limit && !Number.isNaN(limit) ? limit : undefined,
     });
   });
 
@@ -24,8 +27,11 @@ program
   .option('--concurrency <n>', 'Concurrency level', '1')
   .option('--filter-model <pattern>', 'Only run models matching pattern')
   .option('--filter-scenario <pattern>', 'Only run scenarios matching pattern')
+  .option('--sequential-models', 'Run models sequentially, parallelizing scenarios within each model')
+  .option('--limit <number>', 'Limit number of models to run')
   .action(async (options) => {
     const concurrency = Number.parseInt(options.concurrency, 10);
+    const limit = options.limit ? Number.parseInt(options.limit, 10) : undefined;
 
     await runAll({
       modelsFile: options.models,
@@ -34,6 +40,8 @@ program
       concurrency: Number.isNaN(concurrency) ? 1 : concurrency,
       filterModel: options.filterModel,
       filterScenario: options.filterScenario,
+      sequentialModels: options.sequentialModels,
+      limit: limit && !Number.isNaN(limit) ? limit : undefined,
     });
   });
 
