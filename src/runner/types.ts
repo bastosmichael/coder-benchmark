@@ -41,21 +41,21 @@ export interface ModelSummary {
   medianLatencyMs: number;
   accuracyScore: number;
   // Language specific scores
-  cppScore: number;
-  rustScore: number;
-  haskellScore: number;
-  scalaScore: number;
-  javaScore: number;
-  csharpScore: number;
-  goScore: number;
-  dartScore: number;
-  tsScore: number; // Rank 8
-  pyScore: number; // Rank 9
-  rubyScore: number;
-  phpScore: number;
-  bashScore: number;
-  htmlScore: number;
-  sqlScore: number;
+  cppScore: number | null;
+  rustScore: number | null;
+  haskellScore: number | null;
+  scalaScore: number | null;
+  javaScore: number | null;
+  csharpScore: number | null;
+  goScore: number | null;
+  dartScore: number | null;
+  tsScore: number | null;
+  pyScore: number | null;
+  rubyScore: number | null;
+  phpScore: number | null;
+  bashScore: number | null;
+  htmlScore: number | null;
+  sqlScore: number | null;
 }
 
 export interface PullModelsOptions {
