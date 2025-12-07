@@ -345,3 +345,18 @@ Last updated: 2025-12-07T02:04:15.776Z
 | opencoder:1.5b | 20.0 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 0 |
 | deepseek-coder:1.3b | 19.8 | 20 | 20 | 20 | 20 | 20 | 20 | 0 | 7 | 20 | 20 | 20 | 20 | 50 | 20 | 20 | 0 |
  
+
+## New Benchmark Summary 
+
+Last updated: 2025-12-07T03:28:12.287Z 
+
+** System Environment **
+- ** OS **: darwin 25.1.0 (x64) 
+- ** CPU **: Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz (16 cores) 
+- ** Memory **: 64.00 GB
+
+
+| Model | Score | C++ | Rust | Hs | Scala | Java | C# | Go | Dart | TS | Py | Ruby | PHP | Bash | HTML | SQL | Latency (ms) |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| qwen2.5-coder:0.5b | 22.9 | 13 | 0 | 20 | 20 | 7 | 20 | 0 | 0 | 13 | 30 | 50 | 20 | 50 | 50 | 50 | 76633 |
+ 
