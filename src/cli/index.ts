@@ -11,7 +11,7 @@ program
   .option('--limit <number>', 'Limit number of models to prepare')
   .action(async (limitArg, options) => {
     const delay = Number.parseInt(options.delayMs, 10);
-    const limitVal = options.limit || limitArg;
+    const limitVal = limitArg || options.limit;
     const limit = limitVal ? Number.parseInt(limitVal, 10) : undefined;
     await pullModelsCommand({
       modelsFile: options.models,
@@ -36,7 +36,7 @@ program
   .option('--num-thread <number>', 'Number of threads to use')
   .action(async (limitArg, options) => {
     const concurrency = Number.parseInt(options.concurrency, 10);
-    const limitVal = options.limit || limitArg;
+    const limitVal = limitArg || options.limit;
     const limit = limitVal ? Number.parseInt(limitVal, 10) : undefined;
     const numGpu = options.numGpu ? Number.parseInt(options.numGpu, 10) : undefined;
     const mainGpu = options.mainGpu ? Number.parseInt(options.mainGpu, 10) : undefined;
