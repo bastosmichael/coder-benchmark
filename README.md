@@ -15,37 +15,57 @@ npm run prepare-models
 npm run prepare-models -- --limit 10
 ```
 
-2. Run Benchmarks:
+### Benchmarking Commands
+
+#### `npm run bench`
+The standard benchmark runner. It connects to an *existing* running Ollama instance (default: `localhost:11434`).
+
+**Options:**
+- `--models <file>`: Path to JSON file containing model list (default: `models.json`).
+- `--scenarios <dir>`: Path to scenarios directory (default: `scenarios`).
+- `--out <file>`: Output file for results (default: `results.json`).
+- `--concurrency <n>`: Number of parallel scenarios to run (default: `1`).
+- `--filter-model <pattern>`: Regex filter for model names (e.g. `ts-.*`).
+- `--filter-scenario <pattern>`: Regex filter for scenario IDs.
+- `--sequential-models`: Run models one by one to save VRAM, while still parallelizing scenarios (via `--concurrency`).
+- `--limit <n>`: Limit the benchmark to the first `n` models in the list.
+- `--main-gpu <n>`: Index of the main GPU to use (useful for multi-GPU setups).
+- `--num-gpu <n>`: Number of layers to offload to GPU (set to `999` for max offload).
+- `--num-ctx <n>`: Context window size (e.g., `4096`).
+- `--num-thread <n>`: Number of CPU threads to use (if running on CPU).
+
+**Example:**
 ```bash
-# Run all models
-npm run bench
-
-# Run first 10 models
-npm run bench -- --limit 10
-
-# Run sequentially (one model at a time) with parallel scenarios
-npm run bench -- --sequential-models --concurrency 5
-
-# Advanced GPU configuration
-npm run bench -- --main-gpu 0 --num-gpu 999
+npm run bench -- --limit 5 --sequential-models --concurrency 5 --main-gpu 0 --num-gpu 999
 ```
 
-3. Summarize Results:
+#### `npm run bench-max`
+A helper script that **automates the Ollama server configuration** for maximum throughput.
+1. Kills any existing Ollama instance.
+2. Starts a dedicated Ollama server with:
+   - `OLLAMA_NUM_PARALLEL=10` (Allows 10 concurrent requests per model).
+   - `OLLAMA_MAX_LOADED_MODELS=1` (Forces unloading old models to free VRAM).
+3. Runs the benchmark with optimized defaults.
+4. Cleans up (kills Ollama) after finishing.
+
+**Defaults:**
+- `limit`: 10 models
+- `concurrency`: 10 parallel scenarios
+- `sequential-models`: true
+- `main-gpu`: 0
+- `num-gpu`: 999
+
+**Overriding Defaults:**
+You can pass *any* option from `npm run bench` to `bench-max`. The script simply passes extra arguments through.
+
+**Example: Targeting a specific secondary GPU (e.g. index 1)**
 ```bash
-npm run summarize
+npm run bench-max -- --main-gpu 1
 ```
 
-### Max Performance Mode
-To maximize throughput, we provide a helper script that configures a dedicated Ollama instance with high parallelism parameters (`OLLAMA_NUM_PARALLEL` and `OLLAMA_MAX_LOADED_MODELS`).
-
-**Warning**: This will stop any running Ollama instances.
-
+**Example: Running more models with higher concurrency**
 ```bash
-# Runs with optimized parallel settings (default: limit 10, concurrency 10)
-npm run bench-max
-
-# You can override defaults:
-npm run bench-max -- --limit 50 --concurrency 20
+npm run bench-max -- --limit 50 --concurrency 10
 ```
 
 ## HARD → EASY: LLM Code Generation + Automated Testing Difficulty Ranking
@@ -354,4 +374,23 @@ Last updated: 2025-12-06T17:21:06.125Z
 | starcoder:1b | 28.6 | 20 | 30 | 20 | 21 | 21 | 21 | 1 | 21 | 20 | 30 | 51 | 21 | 50 | 51 | 50 | 3773 |
 | deepseek-coder:1.3b | 24.9 | 20 | 0 | 20 | 20 | 20 | 20 | 20 | 0 | 13 | 20 | 50 | 20 | 50 | 50 | 50 | 45212 |
 | qwen2.5-coder:0.5b | 23.5 | 20 | 0 | 20 | 20 | 20 | 20 | 0 | 0 | 20 | 40 | 50 | 20 | 20 | 50 | 50 | 18249 |
+ 
+
+## Benchmark Summary 
+
+Last updated: 2025-12-07T02:04:15.776Z 
+
+** System Environment **
+- ** OS **: darwin 25.1.0 (x64) 
+- ** CPU **: Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz (16 cores) 
+- ** Memory **: 64.00 GB
+
+
+| Model | Score | C++ | Rust | Hs | Scala | Java | C# | Go | Dart | TS | Py | Ruby | PHP | Bash | HTML | SQL | Latency (ms) |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| starcoder:1b | 26.3 | 20 | 30 | 20 | 20 | 20 | 20 | 0 | 0 | 13 | 30 | 50 | 20 | 50 | 50 | 50 | 55927 |
+| qwen2.5-coder:0.5b | 26.0 | 20 | 0 | 20 | 20 | 20 | 20 | 0 | 0 | 20 | 50 | 50 | 20 | 50 | 50 | 50 | 209001 |
+| yi-coder:1.5b | 25.0 | 20 | 0 | 20 | 20 | 20 | 20 | 20 | 20 | 25 | 50 | 50 | 20 | 20 | 20 | 50 | 96111 |
+| opencoder:1.5b | 20.0 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 0 |
+| deepseek-coder:1.3b | 19.8 | 20 | 20 | 20 | 20 | 20 | 20 | 0 | 7 | 20 | 20 | 20 | 20 | 50 | 20 | 20 | 0 |
  
