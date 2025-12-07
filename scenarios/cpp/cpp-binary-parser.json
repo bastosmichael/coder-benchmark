@@ -1,0 +1,18 @@
+{
+    "id": "cpp-binary-parser",
+    "category": "generation",
+    "description": "Implement a binary protocol parser in C++.",
+    "promptFile": "scenarios/cpp/cpp-binary-parser/prompt.md",
+    "templateDir": "scenarios/cpp/cpp-binary-parser/template",
+    "solutionFiles": [
+        "src/parser.cpp"
+    ],
+    "commands": {
+        "build": "mkdir -p build && g++ -std=c++17 src/main.cpp src/parser.cpp -o build/test",
+        "lint": "g++ -std=c++17 -Wall -Wextra -fsyntax-only src/parser.cpp",
+        "test": "./build/test"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "id": "rs-concurrent-queue",
+    "category": "generation",
+    "description": "Implement a concurrent task queue in Rust.",
+    "promptFile": "scenarios/rust/rs-concurrent-queue/prompt.md",
+    "templateDir": "scenarios/rust/rs-concurrent-queue/template",
+    "solutionFiles": [
+        "src/lib.rs"
+    ],
+    "commands": {
+        "build": "cargo build",
+        "lint": "cargo clippy -- -D warnings",
+        "test": "cargo test"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

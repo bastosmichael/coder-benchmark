@@ -1,0 +1,18 @@
+{
+    "id": "java-binary-parser",
+    "category": "generation",
+    "description": "Implement a binary protocol parser in Java.",
+    "promptFile": "scenarios/java/java-binary-parser/prompt.md",
+    "templateDir": "scenarios/java/java-binary-parser/template",
+    "solutionFiles": [
+        "src/main/java/Parser.java"
+    ],
+    "commands": {
+        "build": "javac -d build src/main/java/*.java",
+        "lint": "javac -Xlint:all -d build src/main/java/*.java",
+        "test": "java -cp build Main"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

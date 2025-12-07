@@ -47,6 +47,7 @@ export async function summarizeResults(file: string, quiet: boolean = false): Pr
         console.log(`System: ${system.platform} ${system.release} (${system.arch})`);
         console.log(`CPU: ${system.cpuModel} (${system.cpuCores} cores)`);
         console.log(`Memory: ${(system.totalMemory / 1024 / 1024 / 1024).toFixed(2)} GB`);
+        if (system.gpuInfo) console.log(`GPU: ${system.gpuInfo}`);
         console.log('');
       }
 
@@ -60,7 +61,9 @@ export async function summarizeResults(file: string, quiet: boolean = false): Pr
       markdown += `** System Environment **\n`;
       markdown += `- ** OS **: ${system.platform} ${system.release} (${system.arch}) \n`;
       markdown += `- ** CPU **: ${system.cpuModel} (${system.cpuCores} cores) \n`;
-      markdown += `- ** Memory **: ${(system.totalMemory / 1024 / 1024 / 1024).toFixed(2)} GB\n\n`;
+      markdown += `- ** Memory **: ${(system.totalMemory / 1024 / 1024 / 1024).toFixed(2)} GB\n`;
+      if (system.gpuInfo) markdown += `- ** GPU **: ${system.gpuInfo}\n`;
+      markdown += `\n`;
     }
 
     markdown += '\n| Model | Score | C++ | Rust | Hs | Scala | Java | C# | Go | Dart | TS | Py | Ruby | PHP | Bash | HTML | SQL | Latency (ms) |\n';

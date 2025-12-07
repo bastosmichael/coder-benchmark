@@ -1,0 +1,18 @@
+{
+    "id": "go-concurrent-queue",
+    "category": "generation",
+    "description": "Implement a concurrent task queue in Go.",
+    "promptFile": "scenarios/go/go-concurrent-queue/prompt.md",
+    "templateDir": "scenarios/go/go-concurrent-queue/template",
+    "solutionFiles": [
+        "src/queue.go"
+    ],
+    "commands": {
+        "build": "go build ./src/...",
+        "lint": "go vet ./src/...",
+        "test": "go test -v ./src/..."
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

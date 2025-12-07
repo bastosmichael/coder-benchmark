@@ -1,0 +1,18 @@
+{
+    "id": "cpp-concurrent-queue",
+    "category": "generation",
+    "description": "Implement a concurrent task queue in C++.",
+    "promptFile": "scenarios/cpp/cpp-concurrent-queue/prompt.md",
+    "templateDir": "scenarios/cpp/cpp-concurrent-queue/template",
+    "solutionFiles": [
+        "src/queue.hpp"
+    ],
+    "commands": {
+        "build": "mkdir -p build && g++ -std=c++17 -pthread src/main.cpp -o build/test",
+        "lint": "g++ -std=c++17 -Wall -fsyntax-only src/queue.hpp",
+        "test": "./build/test"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

@@ -82,10 +82,11 @@ export interface SystemInfo {
   platform: string;
   release: string;
   arch: string;
-  cpuModel: string;
-  cpuSpeed: number;
-  cpuCores: number;
   totalMemory: number;
+  freeMemory: number;
+  cpuModel: string;
+  cpuCores: number;
+  gpuInfo?: string;
 }
 
 export interface BenchmarkReport {

@@ -1,0 +1,18 @@
+{
+    "id": "java-concurrent-queue",
+    "category": "generation",
+    "description": "Implement a concurrent task queue in Java.",
+    "promptFile": "scenarios/java/java-concurrent-queue/prompt.md",
+    "templateDir": "scenarios/java/java-concurrent-queue/template",
+    "solutionFiles": [
+        "src/main/java/TaskQueue.java"
+    ],
+    "commands": {
+        "build": "javac -d build src/main/java/*.java",
+        "lint": "javac -Xlint:all -d build src/main/java/*.java",
+        "test": "java -cp build Main"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}
