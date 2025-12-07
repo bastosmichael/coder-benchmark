@@ -1,0 +1,18 @@
+{
+    "id": "go-binary-parser",
+    "category": "generation",
+    "description": "Implement a binary protocol parser in Go.",
+    "promptFile": "scenarios/go/go-binary-parser/prompt.md",
+    "templateDir": "scenarios/go/go-binary-parser/template",
+    "solutionFiles": [
+        "src/parser.go"
+    ],
+    "commands": {
+        "build": "go build ./src/...",
+        "lint": "go vet ./src/...",
+        "test": "go test -v ./src/..."
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

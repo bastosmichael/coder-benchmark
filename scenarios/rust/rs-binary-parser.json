@@ -1,0 +1,18 @@
+{
+    "id": "rs-binary-parser",
+    "category": "generation",
+    "description": "Implement a binary protocol parser in Rust.",
+    "promptFile": "scenarios/rust/rs-binary-parser/prompt.md",
+    "templateDir": "scenarios/rust/rs-binary-parser/template",
+    "solutionFiles": [
+        "src/lib.rs"
+    ],
+    "commands": {
+        "build": "cargo build",
+        "lint": "cargo clippy -- -D warnings",
+        "test": "cargo test"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}
