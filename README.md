@@ -92,8 +92,6 @@ This is **not** a ranking of languages by difficulty for humans — it’s speci
 * LLMs struggle with pointer semantics and correct memory layouts.
 * Unit testing frameworks (GoogleTest, Catch2) add complexity.
 
----
-
 ### **2. Rust**
 
 **Why:**
@@ -104,8 +102,6 @@ This is **not** a ranking of languages by difficulty for humans — it’s speci
 * Cargo makes setup easy, but correctness is very hard.
 * Tests run easily, but *getting code to compile* is what kills models.
 
----
-
 ### **3. Haskell / OCaml / Other ML-family languages**
 
 **Why:**
@@ -114,8 +110,6 @@ This is **not** a ranking of languages by difficulty for humans — it’s speci
 * Functional purity constraints.
 * Complex monadic patterns that models incorrectly chain.
 * Cabal/Stack ecosystem for Haskell is nontrivial.
-
----
 
 ### **4. Scala (especially Scala 3)**
 
@@ -126,8 +120,6 @@ This is **not** a ranking of languages by difficulty for humans — it’s speci
 * sbt build complexity.
 * Functional + OO hybrid that models mis-handle.
 
----
-
 ### **5. Java (with frameworks)**
 
 **Why:**
@@ -137,8 +129,6 @@ This is **not** a ranking of languages by difficulty for humans — it’s speci
 * JUnit tests are easy though.
 * Models sometimes hallucinate imports or classpaths.
 
----
-
 ### **6. C#**
 
 **Why:**
@@ -146,8 +136,6 @@ This is **not** a ranking of languages by difficulty for humans — it’s speci
 * Similar to Java but simpler to assemble.
 * Fewer ecosystem landmines.
 * Models occasionally hallucinate .NET APIs or namespaces.
-
----
 
 ### **7. Go**
 
@@ -157,10 +145,6 @@ This is **not** a ranking of languages by difficulty for humans — it’s speci
 * LLMs sometimes misuse concurrency (goroutines, channels).
 * Tests are straightforward, making it easier than Java/C#.
 
----
-
----
-
 ### **8. Dart**
 
 **Why:**
@@ -169,8 +153,6 @@ This is **not** a ranking of languages by difficulty for humans — it’s speci
 *   Tooling (`dart analyze`) is strict but helpful.
 *   Async concepts (`Future`) sometimes trip up models.
 *   Slightly less training data than TS/Python but high quality (Flutter).
-
----
 
 ### **9. TypeScript (moderately easy)**
 
@@ -183,8 +165,6 @@ This is **not** a ranking of languages by difficulty for humans — it’s speci
 
 (*This is why a TypeScript benchmark is a great starting point.*)
 
----
-
 ### **10. Python**
 
 **Why it’s easier:**
@@ -193,8 +173,6 @@ This is **not** a ranking of languages by difficulty for humans — it’s speci
 * Unit tests (pytest) are trivial.
 * LLMs excel in Python due to training prevalence.
 * Hard parts: imports and environment management, but still easier than TS/Java.
-
----
 
 ### **11. Ruby**
 
@@ -205,8 +183,6 @@ This is **not** a ranking of languages by difficulty for humans — it’s speci
 * LLMs generate valid Ruby fairly reliably.
 * Hard parts: Rails magic and metaprogramming.
 
----
-
 ### **12. PHP**
 
 **Why:**
@@ -214,8 +190,6 @@ This is **not** a ranking of languages by difficulty for humans — it’s speci
 * Very permissive.
 * LLMs generate syntactically correct PHP without much difficulty.
 * Tests with PHPUnit are simple.
-
----
 
 ### **13. Bash / Shell scripts**
 
@@ -225,8 +199,6 @@ This is **not** a ranking of languages by difficulty for humans — it’s speci
 * Hard to test deterministically because shell code often depends on environment.
 * Still overall easier than compiled languages.
 
----
-
 ### **14. HTML/CSS**
 
 **Why it’s almost trivial:**
@@ -235,8 +207,6 @@ This is **not** a ranking of languages by difficulty for humans — it’s speci
 * No runtime errors.
 * Validation is straightforward.
 
----
-
 ### **15. SQL (easiest for models to generate & test)**
 
 **Why it’s easiest:**
@@ -244,8 +214,6 @@ This is **not** a ranking of languages by difficulty for humans — it’s speci
 * LLMs have extremely strong SQL generation performance.
 * Tests are deterministic: run query → compare output.
 * Syntax surface is small and patterns are predictable.
-
----
 
 # Final Ordered List (Hardest → Easiest)
 
@@ -357,23 +325,6 @@ Last updated: 2025-12-06T15:27:19.349Z
 | Model | Score | C++ | Rust | Hs | Scala | Java | C# | Go | Dart | TS | Py | Ruby | PHP | Bash | HTML | SQL | Latency (ms) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | qwen2.5-coder:0.5b | 20.2 | 20 | 0 | 20 | 20 | 20 | 20 | 0 | 0 | 20 | 20 | 20 | 20 | 20 | 50 | 51 | 24122 |
-
-
-## Benchmark Summary 
-
-Last updated: 2025-12-06T17:21:06.125Z 
-
-** System Environment **
-- ** OS **: darwin 25.1.0 (x64) 
-- ** CPU **: Intel(R) Core(TM) i9-9980HK CPU @ 2.40GHz (16 cores) 
-- ** Memory **: 64.00 GB
-
-
-| Model | Score | C++ | Rust | Hs | Scala | Java | C# | Go | Dart | TS | Py | Ruby | PHP | Bash | HTML | SQL | Latency (ms) |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| starcoder:1b | 28.6 | 20 | 30 | 20 | 21 | 21 | 21 | 1 | 21 | 20 | 30 | 51 | 21 | 50 | 51 | 50 | 3773 |
-| deepseek-coder:1.3b | 24.9 | 20 | 0 | 20 | 20 | 20 | 20 | 20 | 0 | 13 | 20 | 50 | 20 | 50 | 50 | 50 | 45212 |
-| qwen2.5-coder:0.5b | 23.5 | 20 | 0 | 20 | 20 | 20 | 20 | 0 | 0 | 20 | 40 | 50 | 20 | 20 | 50 | 50 | 18249 |
  
 
 ## Benchmark Summary 

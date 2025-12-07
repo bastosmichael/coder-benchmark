@@ -224,18 +224,42 @@ export async function runAll(options: RunOptions): Promise<void> {
 
   /* ... */
   // Capture System Info UP FRONT so we can save it incrementally
+  /* ... */
+  // Capture System Info UP FRONT so we can save it incrementally
   const cpus = os.cpus();
   const cpuModel = cpus.length > 0 ? cpus[0].model : 'Unknown';
-  const cpuSpeed = cpus.length > 0 ? cpus[0].speed : 0;
+
+  let gpuInfo = 'Unknown';
+  try {
+    if (os.platform() === 'darwin') {
+      const { stdout } = await execa('system_profiler', ['SPDisplaysDataType', '-json']);
+      const data = JSON.parse(stdout);
+      const gpus = data.SPDisplaysDataType;
+      if (Array.isArray(gpus)) {
+        gpuInfo = gpus.map((g: any) => g.sppci_model || g._name).join(', ');
+      }
+    } else {
+      // Linux/Windows fallback
+      try {
+        const { stdout } = await execa('nvidia-smi', ['-L']);
+        gpuInfo = stdout.trim();
+      } catch {
+        // Ignore
+      }
+    }
+  } catch (e) {
+    // console.warn('Failed to fetch GPU info', e); 
+  }
 
   const systemInfo: SystemInfo = {
     platform: os.platform(),
     release: os.release(),
     arch: os.arch(),
     cpuModel,
-    cpuSpeed,
     cpuCores: cpus.length,
     totalMemory: os.totalmem(),
+    freeMemory: os.freemem(),
+    gpuInfo
   };
 
   // Function to save progress safely
