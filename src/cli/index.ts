@@ -5,13 +5,14 @@ import { runAll } from '../runner/index.js';
 import { summarizeResults } from '../runner/summarizer.js';
 
 program
-  .command('prepare-models')
+  .command('prepare-models [limit]')
   .option('--models <file>', 'Models file', 'models.json')
   .option('--delay-ms <number>', 'Delay between pulls in milliseconds', '10000')
   .option('--limit <number>', 'Limit number of models to prepare')
-  .action(async (options) => {
+  .action(async (limitArg, options) => {
     const delay = Number.parseInt(options.delayMs, 10);
-    const limit = options.limit ? Number.parseInt(options.limit, 10) : undefined;
+    const limitVal = options.limit || limitArg;
+    const limit = limitVal ? Number.parseInt(limitVal, 10) : undefined;
     await pullModelsCommand({
       modelsFile: options.models,
       delayMs: Number.isNaN(delay) ? 10000 : delay,
@@ -20,7 +21,7 @@ program
   });
 
 program
-  .command('run')
+  .command('run [limit]')
   .option('--models <file>', 'Model list JSON', 'models.json')
   .option('--scenarios <dir>', 'Scenarios directory', 'scenarios')
   .option('--out <file>', 'Output results JSON', 'results.json')
@@ -33,9 +34,10 @@ program
   .option('--main-gpu <number>', 'Index of main GPU to use')
   .option('--num-ctx <number>', 'Context window size')
   .option('--num-thread <number>', 'Number of threads to use')
-  .action(async (options) => {
+  .action(async (limitArg, options) => {
     const concurrency = Number.parseInt(options.concurrency, 10);
-    const limit = options.limit ? Number.parseInt(options.limit, 10) : undefined;
+    const limitVal = options.limit || limitArg;
+    const limit = limitVal ? Number.parseInt(limitVal, 10) : undefined;
     const numGpu = options.numGpu ? Number.parseInt(options.numGpu, 10) : undefined;
     const mainGpu = options.mainGpu ? Number.parseInt(options.mainGpu, 10) : undefined;
     const numCtx = options.numCtx ? Number.parseInt(options.numCtx, 10) : undefined;
