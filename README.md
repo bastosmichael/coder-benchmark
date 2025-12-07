@@ -12,7 +12,7 @@ Copy the example.env to .env and fill in the values.
 ```bash
 npm run prepare-models
 # Or limit to first 10 models:
-npm run prepare-models -- --limit 10
+npm run prepare-models -- 10
 ```
 
 ### Benchmarking Commands
@@ -36,7 +36,7 @@ The standard benchmark runner. It connects to an *existing* running Ollama insta
 
 **Example:**
 ```bash
-npm run bench -- --limit 5 --sequential-models --concurrency 5 --main-gpu 0 --num-gpu 999
+npm run bench -- 5 --sequential-models --concurrency 5 --main-gpu 0 --num-gpu 999
 ```
 
 #### `npm run bench-max`
@@ -65,7 +65,7 @@ npm run bench-max -- --main-gpu 1
 
 **Example: Running more models with higher concurrency**
 ```bash
-npm run bench-max -- --limit 50 --concurrency 10
+npm run bench-max -- 50 --concurrency 10
 ```
 
 ## HARD → EASY: LLM Code Generation + Automated Testing Difficulty Ranking
