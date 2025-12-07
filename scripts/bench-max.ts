@@ -6,11 +6,54 @@ async function main() {
     const isWindows = os.platform() === 'win32';
 
     // Configuration
-    const LIMIT = 10;
-    const CONCURRENCY = 10;
-    const NUM_GPU = 999;
-    const MAIN_GPU = 0;
-    const PARALLEL_SLOTS = 10;
+    const defaults = {
+        LIMIT: 10,
+        CONCURRENCY: 10,
+        NUM_GPU: 999,
+        MAIN_GPU: 0,
+        PARALLEL_SLOTS: 10,
+    };
+
+    const args = process.argv.slice(2);
+    const config: Record<string, string | number> = {};
+    const passthroughArgs: string[] = [];
+
+    // Parse args manually to handle key=value and standard flags
+    for (let i = 0; i < args.length; i++) {
+        const arg = args[i];
+        if (arg.includes('=')) {
+            const [key, value] = arg.split('=');
+            if (key === 'limit') config.LIMIT = Number(value);
+            else if (key === 'concurrency') config.CONCURRENCY = Number(value);
+            else if (key === 'main-gpu' || key === 'mainGpu') config.MAIN_GPU = Number(value);
+            else if (key === 'num-gpu' || key === 'numGpu') config.NUM_GPU = Number(value);
+            else if (key === 'parallel') config.PARALLEL_SLOTS = Number(value);
+            else passthroughArgs.push(arg);
+        } else if (arg.startsWith('--')) {
+            const key = arg.replace(/^--/, '');
+            const value = args[i + 1];
+
+            // Heuristic: if next arg is a number, consume it
+            const isNextNumber = value && !Number.isNaN(Number(value)) && !value.startsWith('-');
+
+            if (key === 'limit' && isNextNumber) { config.LIMIT = Number(value); i++; }
+            else if (key === 'concurrency' && isNextNumber) { config.CONCURRENCY = Number(value); i++; }
+            else if (key === 'main-gpu' && isNextNumber) { config.MAIN_GPU = Number(value); i++; }
+            else if (key === 'num-gpu' && isNextNumber) { config.NUM_GPU = Number(value); i++; }
+            else { passthroughArgs.push(arg); }
+        } else if (!Number.isNaN(Number(arg)) && i === 0) {
+            // Assume first positional number is limit (backward compat / convenient)
+            config.LIMIT = Number(arg);
+        } else {
+            passthroughArgs.push(arg);
+        }
+    }
+
+    const LIMIT = config.LIMIT ?? defaults.LIMIT;
+    const CONCURRENCY = config.CONCURRENCY ?? defaults.CONCURRENCY;
+    const NUM_GPU = config.NUM_GPU ?? defaults.NUM_GPU;
+    const MAIN_GPU = config.MAIN_GPU ?? defaults.MAIN_GPU;
+    const PARALLEL_SLOTS = config.PARALLEL_SLOTS ?? defaults.PARALLEL_SLOTS;
 
     console.log('Stopping any existing Ollama instance...');
     try {
@@ -75,7 +118,6 @@ async function main() {
 
     console.log('Running benchmark...');
     try {
-        const userArgs = process.argv.slice(2);
         await execa('npm', [
             'run', 'bench', '--',
             '--limit', String(LIMIT),
@@ -83,7 +125,7 @@ async function main() {
             '--concurrency', String(CONCURRENCY),
             '--main-gpu', String(MAIN_GPU),
             '--num-gpu', String(NUM_GPU),
-            ...userArgs
+            ...passthroughArgs
         ], { stdio: 'inherit' });
     } catch (e) {
         console.error('Benchmark failed or was interrupted');

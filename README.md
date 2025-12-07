@@ -56,16 +56,16 @@ A helper script that **automates the Ollama server configuration** for maximum t
 - `num-gpu`: 999
 
 **Overriding Defaults:**
-You can pass *any* option from `npm run bench` to `bench-max`. The script simply passes extra arguments through.
+You can pass overrides using `key=value` syntax to avoid npm parsing issues on Windows, or use standard flags if your environment supports it.
 
 **Example: Targeting a specific secondary GPU (e.g. index 1)**
 ```bash
-npm run bench-max -- --main-gpu 1
+npm run bench-max -- main-gpu=1
 ```
 
 **Example: Running more models with higher concurrency**
 ```bash
-npm run bench-max -- 50 --concurrency 10
+npm run bench-max -- limit=50 concurrency=10
 ```
 
 ## HARD → EASY: LLM Code Generation + Automated Testing Difficulty Ranking
