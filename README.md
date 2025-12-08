@@ -314,7 +314,7 @@ We don't test "Reverse a Linked List". We test:
 
 ## Benchmark Summary 
 
-Last updated: 2025-12-08T02:54:58.344Z 
+Last updated: 2025-12-08T13:36:31.838Z 
 
 ** System Environment **
 - ** OS **: win32 10.0.26100 (x64) 
@@ -323,10 +323,10 @@ Last updated: 2025-12-08T02:54:58.344Z
 - ** GPU **: GPU 0: NVIDIA GeForce MX150 (UUID: GPU-cb76dbaf-b12c-0637-77bb-ec29ee391731)
 
 
-| Model | Score | C++ | Rust | Hs | Scala | Java | C# | Go | Dart | TS | Py | Ruby | PHP | Bash | HTML | SQL | Latency (ms) |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| starcoder:1b | 21.3 | 9 | 2 | 22 | 24 | 9 | 9 | 2 | 23 | 22 | 23 | 25 | 25 | 21 | 53 | 54 | 872 |
-| qwen2.5-coder:0.5b | 17.5 | 7 | 0 | 20 | 20 | 7 | 7 | 0 | 0 | 20 | 20 | 20 | 20 | 20 | 50 | 51 | 18389 |
+| Model | Score | C++ | Rust | Hs | OCaml | Scala | Java | C# | Go | Dart | TS | Py | Ruby | PHP | Bash | HTML | SQL | Latency (ms) |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| starcoder:1b | 20.6 | 9 | 2 | 22 | 23 | 24 | 9 | 9 | 2 | 11 | 22 | 23 | 24 | 23 | 21 | 53 | 54 | 819 |
+| qwen2.5-coder:0.5b | 17.7 | 7 | 0 | 20 | 20 | 20 | 7 | 7 | 0 | 0 | 20 | 20 | 20 | 20 | 20 | 50 | 51 | 18901 |
 
 ## Benchmark Summary 
 
