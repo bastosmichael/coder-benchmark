@@ -102,14 +102,14 @@ This is **not** a ranking of languages by difficulty for humans — it’s speci
 * Cargo makes setup easy, but correctness is very hard.
 * Tests run easily, but *getting code to compile* is what kills models.
 
-### **3. Haskell / OCaml / Other ML-family languages**
+### **3. Haskell / OCaml (Hard Functional)**
 
 **Why:**
 
 * Strong, static, expressive type systems → LLMs produce mismatched types often.
 * Functional purity constraints.
 * Complex monadic patterns that models incorrectly chain.
-* Cabal/Stack ecosystem for Haskell is nontrivial.
+* OCaml has syntax quirks (module system, optional semicolons) that confuse models.
 
 ### **4. Scala (especially Scala 3)**
 
@@ -221,25 +221,28 @@ This is **not** a ranking of languages by difficulty for humans — it’s speci
 | ------ | ------------------- | ------------------------------------------------ |
 | **1**  | **C / C++**         | Memory safety, linking, UB, toolchain complexity |
 | **2**  | **Rust**            | Borrow checker, lifetimes, strict compiler       |
-| **3**  | **Haskell / OCaml** | Complex types, functional purity                 |
-| **4**  | **Scala**           | Complex types, implicit/given confusion          |
-| **5**  | **Java**            | Framework complexity, annotations                |
-| **6**  | **C#**              | Namespace/API hallucinations                     |
-| **7**  | **Go**              | Interface correctness, concurrency               |
-| **8**  | **Dart**            | Sound null safety, async patterns                |
-| **9**  | **TypeScript**      | Types + linting + ecosystem surface area         |
-| **10** | **Python**          | Dynamic, model-friendly                          |
-| **11** | **Ruby**            | Easy but can hallucinate Rails magic             |
-| **12** | **PHP**             | Straightforward, permissive                      |
-| **13** | **Bash**            | Env-dependent but simple                         |
-| **14** | **HTML/CSS**        | No runtime errors                                |
-| **15** | **SQL**             | Highly deterministic, models excel               |
+| **3**  | **Haskell**         | Complex types, functional purity, monads         |
+| **4**  | **OCaml**           | Functional features, strict typing, module churn |
+| **5**  | **Scala**           | Complex types, implicit/given confusion          |
+| **6**  | **Java**            | Framework complexity, annotations                |
+| **7**  | **C#**              | Namespace/API hallucinations                     |
+| **8**  | **Go**              | Interface correctness, concurrency               |
+| **9**  | **Dart**            | Sound null safety, async patterns                |
+| **10** | **TypeScript**      | Types + linting + ecosystem surface area         |
+| **11** | **Python**          | Dynamic, model-friendly                          |
+| **12** | **Ruby**            | Easy but can hallucinate Rails magic             |
+| **13** | **PHP**             | Straightforward, permissive                      |
+| **14** | **Bash**            | Env-dependent but simple                         |
+| **15** | **HTML/CSS**        | No runtime errors                                |
+| **16** | **SQL**             | Highly deterministic, models excel               |
 
 ## Benchmark Methodology
 
 This benchmark is designed to be **unforgiving**. Unlike standard evaluations that check if an LLM can solve a LeetCode problem, this framework tests if an LLM can act as a **Senior Software Engineer**.
 
 ### 1. The Core Loop
+The execution order is now **Hardest -> Easiest** (C++ -> SQL). This ensures that the most brittle and complex scenarios are attempted first, providing early signals on model capability.
+
 For every model and every scenario, the framework performs a rigorous lifecycle check:
 1.  **Prompting**: The model is given a "Prompt File" (e.g., `prompt.md`) representing a ticket or requirements document. It must implement the solution in a specific file.
 2.  **Generation**: The model generates the full source code.
