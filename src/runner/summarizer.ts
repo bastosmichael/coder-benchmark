@@ -83,7 +83,7 @@ export async function summarizeResults(file: string, quiet: boolean = false): Pr
     let readme = await fs.readFile(readmePath, 'utf8');
 
     const header = '## Benchmark Summary';
-    const regex = new RegExp(`${header} [\\s\\S] * $`, 'i');
+    const regex = new RegExp(`${header}[\\s\\S]*$`, 'i');
 
     if (regex.test(readme)) {
       readme = readme.replace(regex, `${header} \n\nLast updated: ${new Date().toISOString()} \n\n${markdown} `);

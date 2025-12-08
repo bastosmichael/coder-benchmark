@@ -64,7 +64,7 @@ program
 
 program
   .command('summarize')
-  .argument('<file>', 'Results file to summarize')
+  .argument('[file]', 'Results file to summarize', 'results.json')
   .action(async (file) => {
     await summarizeResults(file);
   });
