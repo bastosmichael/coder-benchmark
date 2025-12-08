@@ -50,6 +50,32 @@ export async function runAll(options: RunOptions): Promise<void> {
     ? scenarios.filter((scenario) => scenarioPattern.test(scenario.config.id))
     : scenarios;
 
+  // Sort scenarios from hardest to easiest for reporting consistency
+  const difficultyOrder = [
+    'cpp', 'rs', 'hs', 'ml', 'scala', 'java', 'cs', 'go', 'dart', 'ts', 'py', 'rb', 'php', 'sh', 'html', 'sql'
+  ];
+
+  const getPrefix = (id: string) => id.split('-')[0];
+
+  filteredScenarios.sort((a, b) => {
+    const pA = getPrefix(a.config.id);
+    const pB = getPrefix(b.config.id);
+    const iA = difficultyOrder.indexOf(pA);
+    const iB = difficultyOrder.indexOf(pB);
+
+    // If both are known, sort by index
+    if (iA !== -1 && iB !== -1) {
+      if (iA !== iB) return iA - iB;
+      // same language, sort by id
+      return a.config.id.localeCompare(b.config.id);
+    }
+    // If one is unknown, put it at end
+    if (iA !== -1) return -1;
+    if (iB !== -1) return 1;
+    // Both unknown, sort string
+    return pA.localeCompare(pB) || a.config.id.localeCompare(b.config.id);
+  });
+
   const results: RunResult[] = [];
 
   // Stats tracking

@@ -30,6 +30,7 @@ export async function summarizeResults(file: string, quiet: boolean = false): Pr
       'C++': fmt(s.cppScore),
       'Rust': fmt(s.rustScore),
       'Hs': fmt(s.haskellScore),
+      'OCaml': fmt(s.ocamlScore),
       'Scala': fmt(s.scalaScore),
       'Java': fmt(s.javaScore),
       'C#': fmt(s.csharpScore),
@@ -69,12 +70,12 @@ export async function summarizeResults(file: string, quiet: boolean = false): Pr
       markdown += `\n`;
     }
 
-    markdown += '\n| Model | Score | C++ | Rust | Hs | Scala | Java | C# | Go | Dart | TS | Py | Ruby | PHP | Bash | HTML | SQL | Latency (ms) |\n';
-    markdown += '|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n';
+    markdown += '\n| Model | Score | C++ | Rust | Hs | OCaml | Scala | Java | C# | Go | Dart | TS | Py | Ruby | PHP | Bash | HTML | SQL | Latency (ms) |\n';
+    markdown += '|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|\n';
 
     for (const s of summaries) {
       const f = (v: number | null) => v !== null ? v.toFixed(0) : '-';
-      markdown += `| ${s.model} | ${s.accuracyScore.toFixed(1)} | ${f(s.cppScore)} | ${f(s.rustScore)} | ${f(s.haskellScore)} | ${f(s.scalaScore)} | ${f(s.javaScore)} | ${f(s.csharpScore)} | ${f(s.goScore)} | ${f(s.dartScore)} | ${f(s.tsScore)} | ${f(s.pyScore)} | ${f(s.rubyScore)} | ${f(s.phpScore)} | ${f(s.bashScore)} | ${f(s.htmlScore)} | ${f(s.sqlScore)} | ${s.medianLatencyMs} |\n`;
+      markdown += `| ${s.model} | ${s.accuracyScore.toFixed(1)} | ${f(s.cppScore)} | ${f(s.rustScore)} | ${f(s.haskellScore)} | ${f(s.ocamlScore)} | ${f(s.scalaScore)} | ${f(s.javaScore)} | ${f(s.csharpScore)} | ${f(s.goScore)} | ${f(s.dartScore)} | ${f(s.tsScore)} | ${f(s.pyScore)} | ${f(s.rubyScore)} | ${f(s.phpScore)} | ${f(s.bashScore)} | ${f(s.htmlScore)} | ${f(s.sqlScore)} | ${s.medianLatencyMs} |\n`;
     }
 
     // Read README

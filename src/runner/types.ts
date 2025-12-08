@@ -56,6 +56,7 @@ export interface ModelSummary {
   bashScore: number | null;
   htmlScore: number | null;
   sqlScore: number | null;
+  ocamlScore: number | null;
 }
 
 export interface PullModelsOptions {

@@ -98,6 +98,7 @@ export function summarizeModelResults(results: RunResult[]): ModelSummary[] {
     const bashScore = calculateScore(modelResults.filter(r => r.scenarioId.startsWith('sh-')));
     const htmlScore = calculateScore(modelResults.filter(r => r.scenarioId.startsWith('html-')));
     const sqlScore = calculateScore(modelResults.filter(r => r.scenarioId.startsWith('sql-')));
+    const ocamlScore = calculateScore(modelResults.filter(r => r.scenarioId.startsWith('ml-')));
 
     let sumScores = 0;
     let countLangs = 0;
@@ -124,6 +125,7 @@ export function summarizeModelResults(results: RunResult[]): ModelSummary[] {
     checkLang('sh-', bashScore);
     checkLang('html-', htmlScore);
     checkLang('sql-', sqlScore);
+    checkLang('ml-', ocamlScore);
 
     const overallScore = countLangs > 0 ? sumScores / countLangs : 0;
 
@@ -149,7 +151,8 @@ export function summarizeModelResults(results: RunResult[]): ModelSummary[] {
       phpScore,
       bashScore,
       htmlScore,
-      sqlScore
+      sqlScore,
+      ocamlScore
     };
   });
 
