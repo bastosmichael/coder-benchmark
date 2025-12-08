@@ -1,0 +1,18 @@
+{
+    "id": "ml-binary-parser",
+    "category": "generation",
+    "description": "Implement a binary packet parser in OCaml.",
+    "promptFile": "scenarios/ocaml/ml-binary-parser/prompt.md",
+    "templateDir": "scenarios/ocaml/ml-binary-parser/template",
+    "solutionFiles": [
+        "src/binary_parser.ml"
+    ],
+    "commands": {
+        "build": "ocamlopt -c -I src src/binary_parser.ml",
+        "lint": "echo noop",
+        "test": "ocamlopt -I src unix.cmxa src/binary_parser.ml tests/test_binary_parser.ml -o test_runner && ./test_runner"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

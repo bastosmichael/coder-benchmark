@@ -1,0 +1,18 @@
+{
+    "id": "scala-concurrent-queue",
+    "category": "generation",
+    "description": "Implement a TaskQueue in Scala using Futures and Promises.",
+    "promptFile": "scenarios/scala/scala-concurrent-queue/prompt.md",
+    "templateDir": "scenarios/scala/scala-concurrent-queue/template",
+    "solutionFiles": [
+        "src/TaskQueue.scala"
+    ],
+    "commands": {
+        "build": "mkdir -p bin && scalac -d bin src/TaskQueue.scala",
+        "lint": "echo noop",
+        "test": "scalac -d bin -classpath bin tests/TestTaskQueue.scala && scala -classpath bin TestTaskQueue"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "id": "scala-binary-parser",
+    "category": "generation",
+    "description": "Implement a binary packet parser in Scala.",
+    "promptFile": "scenarios/scala/scala-binary-parser/prompt.md",
+    "templateDir": "scenarios/scala/scala-binary-parser/template",
+    "solutionFiles": [
+        "src/BinaryParser.scala"
+    ],
+    "commands": {
+        "build": "mkdir -p bin && scalac -d bin src/BinaryParser.scala",
+        "lint": "echo noop",
+        "test": "scalac -d bin -classpath bin tests/TestBinaryParser.scala && scala -classpath bin TestBinaryParser"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

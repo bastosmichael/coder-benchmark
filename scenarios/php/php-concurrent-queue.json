@@ -1,0 +1,18 @@
+{
+    "id": "php-concurrent-queue",
+    "category": "generation",
+    "description": "Implement a TaskQueue in PHP with rate limiting and retries.",
+    "promptFile": "scenarios/php/php-concurrent-queue/prompt.md",
+    "templateDir": "scenarios/php/php-concurrent-queue/template",
+    "solutionFiles": [
+        "src/TaskQueue.php"
+    ],
+    "commands": {
+        "build": "php -l src/TaskQueue.php",
+        "lint": "echo noop",
+        "test": "php tests/TaskQueueTest.php"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

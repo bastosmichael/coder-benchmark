@@ -1,0 +1,18 @@
+{
+    "id": "hs-concurrent-queue",
+    "category": "generation",
+    "description": "Implement a TaskQueue in Haskell using MVars or STM.",
+    "promptFile": "scenarios/haskell/hs-concurrent-queue/prompt.md",
+    "templateDir": "scenarios/haskell/hs-concurrent-queue/template",
+    "solutionFiles": [
+        "src/TaskQueue.hs"
+    ],
+    "commands": {
+        "build": "ghc -O2 -c src/TaskQueue.hs -o /dev/null",
+        "lint": "echo noop",
+        "test": "runghc -isrc tests/TestTaskQueue.hs"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}
