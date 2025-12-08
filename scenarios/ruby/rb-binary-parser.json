@@ -1,0 +1,18 @@
+{
+    "id": "rb-binary-parser",
+    "category": "generation",
+    "description": "Implement a binary packet parser in Ruby.",
+    "promptFile": "scenarios/ruby/rb-binary-parser/prompt.md",
+    "templateDir": "scenarios/ruby/rb-binary-parser/template",
+    "solutionFiles": [
+        "src/binary_parser.rb"
+    ],
+    "commands": {
+        "build": "ruby -c src/binary_parser.rb",
+        "lint": "echo noop",
+        "test": "ruby tests/test_binary_parser.rb"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

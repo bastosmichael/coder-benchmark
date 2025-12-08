@@ -1,0 +1,18 @@
+{
+    "id": "ml-concurrent-queue",
+    "category": "generation",
+    "description": "Implement a TaskQueue in OCaml using Threads and Mutexes.",
+    "promptFile": "scenarios/ocaml/ml-concurrent-queue/prompt.md",
+    "templateDir": "scenarios/ocaml/ml-concurrent-queue/template",
+    "solutionFiles": [
+        "src/concurrent_queue.ml"
+    ],
+    "commands": {
+        "build": "ocamlopt -c -thread -I src src/concurrent_queue.ml",
+        "lint": "echo noop",
+        "test": "ocamlopt -thread -I src unix.cmxa threads.cmxa src/concurrent_queue.ml tests/test_concurrent_queue.ml -o test_runner && ./test_runner"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

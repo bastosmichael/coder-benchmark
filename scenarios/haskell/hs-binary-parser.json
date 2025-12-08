@@ -1,0 +1,18 @@
+{
+    "id": "hs-binary-parser",
+    "category": "generation",
+    "description": "Implement a binary packet parser in Haskell.",
+    "promptFile": "scenarios/haskell/hs-binary-parser/prompt.md",
+    "templateDir": "scenarios/haskell/hs-binary-parser/template",
+    "solutionFiles": [
+        "src/BinaryParser.hs"
+    ],
+    "commands": {
+        "build": "ghc -O2 -c src/BinaryParser.hs -o /dev/null",
+        "lint": "echo noop",
+        "test": "runghc -isrc tests/TestBinaryParser.hs"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

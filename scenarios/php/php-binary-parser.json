@@ -1,0 +1,18 @@
+{
+    "id": "php-binary-parser",
+    "category": "generation",
+    "description": "Implement a binary packet parser in PHP.",
+    "promptFile": "scenarios/php/php-binary-parser/prompt.md",
+    "templateDir": "scenarios/php/php-binary-parser/template",
+    "solutionFiles": [
+        "src/BinaryParser.php"
+    ],
+    "commands": {
+        "build": "php -l src/BinaryParser.php",
+        "lint": "echo noop",
+        "test": "php tests/BinaryParserTest.php"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

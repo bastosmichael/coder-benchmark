@@ -1,0 +1,18 @@
+{
+    "id": "rb-concurrent-queue",
+    "category": "generation",
+    "description": "Implement a Concurrent Queue in Ruby using threads and monitors.",
+    "promptFile": "scenarios/ruby/rb-concurrent-queue/prompt.md",
+    "templateDir": "scenarios/ruby/rb-concurrent-queue/template",
+    "solutionFiles": [
+        "src/concurrent_queue.rb"
+    ],
+    "commands": {
+        "build": "ruby -c src/concurrent_queue.rb",
+        "lint": "echo noop",
+        "test": "ruby tests/test_concurrent_queue.rb"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}
