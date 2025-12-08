@@ -33,7 +33,6 @@ program
   .option('--num-gpu <number>', 'Number of layers to offload to GPU')
   .option('--main-gpu <number>', 'Index of main GPU to use')
   .option('--num-ctx <number>', 'Context window size')
-  .option('--num-ctx <number>', 'Context window size')
   .option('--num-thread <number>', 'Number of threads to use')
   .option('--iterations <number>', 'Number of times to run each scenario', '3')
   .action(async (limitArg, options) => {
