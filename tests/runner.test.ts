@@ -204,7 +204,7 @@ describe('runner', () => {
         // Should run m1 on s2 ONLY.
         // We can check createWorkspace calls
         expect(workspace.createWorkspace).toHaveBeenCalledTimes(1);
-        expect(workspace.createWorkspace).toHaveBeenCalledWith('m1', 's2');
+        expect(workspace.createWorkspace).toHaveBeenCalledWith('m1', 's2', undefined);
     });
 
     it('handles python linting output', async () => {
