@@ -37,6 +37,9 @@ The standard benchmark runner. It connects to an *existing* running Ollama insta
 **Example:**
 ```bash
 npm run bench -- 5 --sequential-models --concurrency 5 --main-gpu 0 --num-gpu 999
+
+# Windows PowerShell (if arguments are ignored)
+npm run bench "--" 5 --sequential-models --concurrency 5 --main-gpu 0 --num-gpu 999
 ```
 
 #### `npm run bench-max`

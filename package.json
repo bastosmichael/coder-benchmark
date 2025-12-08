@@ -6,10 +6,10 @@
     "build": "tsc -p tsconfig.json",
     "lint": "eslint src/**/*.ts",
     "cli": "node --loader ts-node/esm src/cli/index.ts",
-    "prepare-models": "npm run cli -- prepare-models",
-    "bench": "npm run cli -- run",
+    "prepare-models": "node --loader ts-node/esm src/cli/index.ts prepare-models",
+    "bench": "node --loader ts-node/esm src/cli/index.ts run",
     "bench-max": "node --loader ts-node/esm scripts/bench-max.ts",
-    "summarize": "npm run cli -- summarize results.json",
+    "summarize": "node --loader ts-node/esm src/cli/index.ts summarize",
     "test": "vitest run tests/"
   },
   "devDependencies": {
