@@ -1,0 +1,18 @@
+{
+    "id": "cs-binary-parser",
+    "category": "generation",
+    "description": "Implement a binary protocol parser in C#.",
+    "promptFile": "scenarios/csharp/cs-binary-parser/prompt.md",
+    "templateDir": "scenarios/csharp/cs-binary-parser/template",
+    "solutionFiles": [
+        "src/Parser.cs"
+    ],
+    "commands": {
+        "build": "dotnet build",
+        "lint": "dotnet build",
+        "test": "dotnet run"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}

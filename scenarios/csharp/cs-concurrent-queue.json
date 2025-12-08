@@ -1,0 +1,18 @@
+{
+    "id": "cs-concurrent-queue",
+    "category": "generation",
+    "description": "Implement a concurrent task queue in C#.",
+    "promptFile": "scenarios/csharp/cs-concurrent-queue/prompt.md",
+    "templateDir": "scenarios/csharp/cs-concurrent-queue/template",
+    "solutionFiles": [
+        "src/TaskQueue.cs"
+    ],
+    "commands": {
+        "build": "dotnet build",
+        "lint": "dotnet build",
+        "test": "dotnet run"
+    },
+    "constraints": {
+        "singleCodeBlock": true
+    }
+}
