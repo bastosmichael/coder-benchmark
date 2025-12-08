@@ -315,7 +315,7 @@ We don't test "Reverse a Linked List". We test:
 *   **Systems Programming**: Parse a binary packet stream.
 *   **Data/Scripts**: Log rotation, SQL Analytics, Semantic HTML.
 
-## Benchmark Summary 
+## Windows Benchmark Summary 
 
 Last updated: 2025-12-08T13:36:31.838Z 
 
@@ -331,7 +331,7 @@ Last updated: 2025-12-08T13:36:31.838Z
 | starcoder:1b | 20.6 | 9 | 2 | 22 | 23 | 24 | 9 | 9 | 2 | 11 | 22 | 23 | 24 | 23 | 21 | 53 | 54 | 819 |
 | qwen2.5-coder:0.5b | 17.7 | 7 | 0 | 20 | 20 | 20 | 7 | 7 | 0 | 0 | 20 | 20 | 20 | 20 | 20 | 50 | 51 | 18901 |
 
-## Benchmark Summary 
+## MacOS Benchmark Summary 
 
 Last updated: 2025-12-08T01:11:06.240Z 
 
