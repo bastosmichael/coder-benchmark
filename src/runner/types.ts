@@ -78,6 +78,7 @@ export interface RunOptions {
   mainGpu?: number;
   numCtx?: number;
   numThread?: number;
+  iterations?: number;
 }
 export interface SystemInfo {
   platform: string;

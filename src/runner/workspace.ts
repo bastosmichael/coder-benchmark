@@ -10,9 +10,10 @@ export interface CommandResult {
   durationMs: number;
 }
 
-export async function createWorkspace(model: string, scenarioId: string): Promise<string> {
+export async function createWorkspace(model: string, scenarioId: string, suffix?: string): Promise<string> {
   const sanitizedModel = model.replace(/[^a-zA-Z0-9_-]/g, '_');
-  const workspacePath = path.join('.workdir', `${sanitizedModel}-${scenarioId}-${Date.now()}`);
+  const distinctStr = suffix ? `-${suffix}` : `-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+  const workspacePath = path.join('.workdir', `${sanitizedModel}-${scenarioId}${distinctStr}`);
   await fs.mkdir(workspacePath, { recursive: true });
   return workspacePath;
 }

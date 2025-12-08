@@ -81,9 +81,11 @@ export async function runAll(options: RunOptions): Promise<void> {
   // Stats tracking
   const modelStats = new Map<string, { total: number; completed: number; durationsMs: number[] }>();
 
+  const iterations = options.iterations || 1;
+
   for (const model of models) {
     modelStats.set(model, {
-      total: filteredScenarios.length,
+      total: filteredScenarios.length * iterations,
       completed: 0,
       durationsMs: []
     });
@@ -98,7 +100,7 @@ export async function runAll(options: RunOptions): Promise<void> {
   }
 
   /* Create task helper */
-  const createRunTask = (model: string, scenario: typeof filteredScenarios[0]) => async () => {
+  const createRunTask = (model: string, scenario: typeof filteredScenarios[0], iterationIndex: number = 0) => async () => {
     const stats = modelStats.get(model)!;
     const startTime = Date.now();
 
@@ -110,12 +112,15 @@ export async function runAll(options: RunOptions): Promise<void> {
       etaMsg = ` (Avg: ${formatDuration(avg)}, ETA: ${formatDuration(eta)})`;
     }
 
-    console.log(`[${stats.completed + 1}/${stats.total}] Running ${model} on ${scenario.config.id}...${etaMsg}`);
+    const iterSuffix = iterations > 1 ? ` (iter ${iterationIndex + 1}/${iterations})` : '';
+    console.log(`[${stats.completed + 1}/${stats.total}] Running ${model} on ${scenario.config.id}${iterSuffix}...${etaMsg}`);
 
     const isTs = scenario.config.id.startsWith('ts-');
 
     // 1. Setup Workspace
-    const relativeWorkspacePath = await createWorkspace(model, scenario.config.id);
+    // Use iterationIndex plus a timestamp-random suffix to be super safe
+    const suffix = iterations > 1 ? `iter${iterationIndex}-${Date.now().toString().slice(-6)}` : undefined;
+    const relativeWorkspacePath = await createWorkspace(model, scenario.config.id, suffix);
     const workspacePath = path.resolve(relativeWorkspacePath);
 
     // Copy base template (excluding node_modules) ONLY for TS
@@ -337,7 +342,12 @@ export async function runAll(options: RunOptions): Promise<void> {
 
   if (options.sequentialModels) {
     for (const model of models) {
-      const modelTasks = filteredScenarios.map((s) => createRunTask(model, s));
+      const modelTasks = [];
+      for (const s of filteredScenarios) {
+        for (let k = 0; k < iterations; k++) {
+          modelTasks.push(createRunTask(model, s, k));
+        }
+      }
       await runQueue(modelTasks);
     }
   } else {
@@ -345,7 +355,9 @@ export async function runAll(options: RunOptions): Promise<void> {
     const allTasks: (() => Promise<void>)[] = [];
     for (const model of models) {
       for (const s of filteredScenarios) {
-        allTasks.push(createRunTask(model, s));
+        for (let k = 0; k < iterations; k++) {
+          allTasks.push(createRunTask(model, s, k));
+        }
       }
     }
     await runQueue(allTasks);

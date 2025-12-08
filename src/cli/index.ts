@@ -33,7 +33,9 @@ program
   .option('--num-gpu <number>', 'Number of layers to offload to GPU')
   .option('--main-gpu <number>', 'Index of main GPU to use')
   .option('--num-ctx <number>', 'Context window size')
+  .option('--num-ctx <number>', 'Context window size')
   .option('--num-thread <number>', 'Number of threads to use')
+  .option('--iterations <number>', 'Number of times to run each scenario', '3')
   .action(async (limitArg, options) => {
     const concurrency = Number.parseInt(options.concurrency, 10);
     const limitVal = limitArg || options.limit;
@@ -42,6 +44,7 @@ program
     const mainGpu = options.mainGpu ? Number.parseInt(options.mainGpu, 10) : undefined;
     const numCtx = options.numCtx ? Number.parseInt(options.numCtx, 10) : undefined;
     const numThread = options.numThread ? Number.parseInt(options.numThread, 10) : undefined;
+    const iterations = options.iterations ? Number.parseInt(options.iterations, 10) : undefined;
 
     await runAll({
       modelsFile: options.models,
@@ -56,6 +59,7 @@ program
       mainGpu: mainGpu && !Number.isNaN(mainGpu) ? mainGpu : undefined,
       numCtx: numCtx && !Number.isNaN(numCtx) ? numCtx : undefined,
       numThread: numThread && !Number.isNaN(numThread) ? numThread : undefined,
+      iterations: iterations && !Number.isNaN(iterations) ? iterations : undefined,
     });
   });
 
