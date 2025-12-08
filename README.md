@@ -235,7 +235,6 @@ This is **not** a ranking of languages by difficulty for humans — it’s speci
 | **14** | **HTML/CSS**        | No runtime errors                                |
 | **15** | **SQL**             | Highly deterministic, models excel               |
 
-
 ## Benchmark Methodology
 
 This benchmark is designed to be **unforgiving**. Unlike standard evaluations that check if an LLM can solve a LeetCode problem, this framework tests if an LLM can act as a **Senior Software Engineer**.
@@ -310,22 +309,21 @@ We don't test "Reverse a Linked List". We test:
 *   **Systems Programming**: Parse a binary packet stream.
 *   **Data/Scripts**: Log rotation, SQL Analytics, Semantic HTML.
 
----
+## Benchmark Summary 
 
-## Benchmark Summary
+Last updated: 2025-12-08T02:54:58.344Z 
 
-Last updated: 2025-12-06T15:27:19.349Z
-
-**System Environment**
-- **OS**: win32 10.0.26100 (x64)
-- **CPU**: Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz (8 cores)
-- **Memory**: 15.90 GB
+** System Environment **
+- ** OS **: win32 10.0.26100 (x64) 
+- ** CPU **: Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz (8 cores) 
+- ** Memory **: 15.90 GB
+- ** GPU **: GPU 0: NVIDIA GeForce MX150 (UUID: GPU-cb76dbaf-b12c-0637-77bb-ec29ee391731)
 
 
 | Model | Score | C++ | Rust | Hs | Scala | Java | C# | Go | Dart | TS | Py | Ruby | PHP | Bash | HTML | SQL | Latency (ms) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| qwen2.5-coder:0.5b | 20.2 | 20 | 0 | 20 | 20 | 20 | 20 | 0 | 0 | 20 | 20 | 20 | 20 | 20 | 50 | 51 | 24122 |
- 
+| starcoder:1b | 21.3 | 9 | 2 | 22 | 24 | 9 | 9 | 2 | 23 | 22 | 23 | 25 | 25 | 21 | 53 | 54 | 872 |
+| qwen2.5-coder:0.5b | 17.5 | 7 | 0 | 20 | 20 | 7 | 7 | 0 | 0 | 20 | 20 | 20 | 20 | 20 | 50 | 51 | 18389 |
 
 ## Benchmark Summary 
 
