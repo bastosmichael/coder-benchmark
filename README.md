@@ -42,6 +42,7 @@ The standard benchmark runner. It connects to an *existing* running Ollama insta
 - `--num-gpu <n>`: Number of layers to offload to GPU (set to `999` for max offload).
 - `--num-ctx <n>`: Context window size (e.g., `4096`).
 - `--num-thread <n>`: Number of CPU threads to use (if running on CPU).
+- `--iterations <n>`: Number of times to run each scenario (default: `3`).
 
 **Example:**
 ```bash
@@ -49,7 +50,7 @@ The standard benchmark runner. It connects to an *existing* running Ollama insta
 npm run bench -- --models tiny --concurrency 5
 
 # Run the default 'coders' list with sequential models
-npm run bench -- 5 --sequential-models --concurrency 5 --main-gpu 0 --num-gpu 999
+npm run bench -- 5 --sequential-models --concurrency 5 --main-gpu 0 --num-gpu 999 --iterations 5
 ```
 
 #### `npm run bench-max`
@@ -71,8 +72,14 @@ A helper script that **automates the Ollama server configuration** for maximum t
 **Overriding Defaults:**
 You can pass overrides using `key=value` syntax to avoid npm parsing issues on Windows, or use standard flags if your environment supports it.
 
-**Example: Targeting a specific secondary GPU (e.g. index 1)**
+**Example: Targeting a specific secondary GPU (e.g. index 1) with more iterations**
 ```bash
+# Windows / Mac / Linux
+npm run bench-max main-gpu=1 iterations=5
+
+# Alternative syntax
+npm run bench-max -- --main-gpu 1 --iterations 5
+```
 npm run bench-max -- main-gpu=1
 ```
 
