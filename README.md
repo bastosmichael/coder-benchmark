@@ -10,8 +10,17 @@ Copy the example.env to .env and fill in the values.
 ### Basic Usage
 1. Prepare models (pulls from Ollama):
 ```bash
+# Default (pulls models from models/coders.json)
 npm run prepare-models
-# Or limit to first 10 models:
+
+# Pull specific category of models
+npm run prepare-models -- --models tiny    # (< 8GB RAM)
+npm run prepare-models -- --models small   # (8-16GB RAM)
+npm run prepare-models -- --models medium  # (16-32GB RAM)
+npm run prepare-models -- --models large   # (32-64GB RAM)
+npm run prepare-models -- --models huge    # (> 64GB RAM)
+
+# Or limit to first 10 models in the default list:
 npm run prepare-models -- 10
 ```
 
@@ -21,7 +30,7 @@ npm run prepare-models -- 10
 The standard benchmark runner. It connects to an *existing* running Ollama instance (default: `localhost:11434`).
 
 **Options:**
-- `--models <file>`: Path to JSON file containing model list (default: `models.json`).
+- `--models <name|file>`: Model list to use. Can be a preset name (`coders`, `tiny`, `small`, `medium`, `large`, `huge`) or a path to a JSON file (default: `coders`).
 - `--scenarios <dir>`: Path to scenarios directory (default: `scenarios`).
 - `--out <file>`: Output file for results (default: `results.json`).
 - `--concurrency <n>`: Number of parallel scenarios to run (default: `1`).
@@ -36,10 +45,11 @@ The standard benchmark runner. It connects to an *existing* running Ollama insta
 
 **Example:**
 ```bash
-npm run bench -- 5 --sequential-models --concurrency 5 --main-gpu 0 --num-gpu 999
+# Run the 'tiny' models
+npm run bench -- --models tiny --concurrency 5
 
-# Windows PowerShell (if arguments are ignored)
-npm run bench "--" 5 --sequential-models --concurrency 5 --main-gpu 0 --num-gpu 999
+# Run the default 'coders' list with sequential models
+npm run bench -- 5 --sequential-models --concurrency 5 --main-gpu 0 --num-gpu 999
 ```
 
 #### `npm run bench-max`
