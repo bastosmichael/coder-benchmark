@@ -1,0 +1,7 @@
+[
+    "llama3:70b",
+    "llama2:70b",
+    "qwen:72b",
+    "deepseek-llm:67b",
+    "codellama:70b"
+]
