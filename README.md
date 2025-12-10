@@ -317,10 +317,10 @@ We don't test "Reverse a Linked List". We test:
 
 ## Windows Benchmark Summary 
 
-Last updated: 2025-12-08T13:36:31.838Z 
+Last updated: 2025-12-09T05:35:49.911Z 
 
 ** System Environment **
-- ** OS **: win32 10.0.26100 (x64) 
+- ** OS **: win32 10.0.26200 (x64) 
 - ** CPU **: Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz (8 cores) 
 - ** Memory **: 15.90 GB
 - ** GPU **: GPU 0: NVIDIA GeForce MX150 (UUID: GPU-cb76dbaf-b12c-0637-77bb-ec29ee391731)
@@ -328,8 +328,11 @@ Last updated: 2025-12-08T13:36:31.838Z
 
 | Model | Score | C++ | Rust | Hs | OCaml | Scala | Java | C# | Go | Dart | TS | Py | Ruby | PHP | Bash | HTML | SQL | Latency (ms) |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| starcoder:1b | 20.6 | 9 | 2 | 22 | 23 | 24 | 9 | 9 | 2 | 11 | 22 | 23 | 24 | 23 | 21 | 53 | 54 | 819 |
-| qwen2.5-coder:0.5b | 17.7 | 7 | 0 | 20 | 20 | 20 | 7 | 7 | 0 | 0 | 20 | 20 | 20 | 20 | 20 | 50 | 51 | 18901 |
+| starcoder:1b | 21.5 | 9 | 2 | 23 | 23 | 23 | 9 | 9 | 2 | 23 | 22 | 23 | 24 | 23 | 25 | 53 | 54 | 764 |
+| yi-coder:1.5b | 20.0 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 20 | 0 |
+| qwen2.5-coder:0.5b | 17.7 | 7 | 0 | 20 | 20 | 20 | 7 | 7 | 0 | 0 | 20 | 20 | 20 | 20 | 20 | 50 | 51 | 18589 |
+| deepseek-coder:1.3b | 17.5 | 7 | 0 | 20 | 20 | 20 | 7 | 7 | 0 | 0 | 20 | 20 | 20 | 20 | 20 | 50 | 50 | 43531 |
+| opencoder:1.5b | 17.5 | 7 | 0 | 20 | 20 | 20 | 7 | 7 | 0 | 0 | 20 | 20 | 20 | 20 | 20 | 50 | 50 | 55870 |
 
 ## MacOS Benchmark Summary 
 
