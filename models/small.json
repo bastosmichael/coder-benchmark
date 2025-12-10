@@ -1,0 +1,9 @@
+[
+    "llama2:13b",
+    "codellama:13b",
+    "vicuna:13b",
+    "orca2:13b",
+    "qwen:14b",
+    "starcoder2:15b",
+    "wizardljm-uncensored:13b"
+]

@@ -1,0 +1,8 @@
+[
+    "all-minilm:22m",
+    "all-minilm:33m",
+    "nomic-embed-text:137m",
+    "snowflake-arctic-embed:335m",
+    "mxbai-embed-large:335m",
+    "bge-m3:567m"
+]

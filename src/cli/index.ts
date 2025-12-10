@@ -6,15 +6,21 @@ import { summarizeResults } from '../runner/summarizer.js';
 
 program
   .command('prepare-models [limit]')
-  .option('--models <file>', 'Models file', 'models.json')
+  .option('--models <file>', 'Models file', 'coders')
   .option('--delay-ms <number>', 'Delay between pulls in milliseconds', '10000')
   .option('--limit <number>', 'Limit number of models to prepare')
   .action(async (limitArg, options) => {
     const delay = Number.parseInt(options.delayMs, 10);
     const limitVal = limitArg || options.limit;
     const limit = limitVal ? Number.parseInt(limitVal, 10) : undefined;
+    
+    // If models arg doesn't end in .json, assume it's a name in models/ dir
+    const modelsFile = options.models.endsWith('.json') 
+      ? options.models 
+      : `models/${options.models}.json`;
+
     await pullModelsCommand({
-      modelsFile: options.models,
+      modelsFile,
       delayMs: Number.isNaN(delay) ? 10000 : delay,
       limit: limit && !Number.isNaN(limit) ? limit : undefined,
     });
@@ -22,7 +28,7 @@ program
 
 program
   .command('run [limit]')
-  .option('--models <file>', 'Model list JSON', 'models.json')
+  .option('--models <file>', 'Model list JSON', 'coders')
   .option('--scenarios <dir>', 'Scenarios directory', 'scenarios')
   .option('--out <file>', 'Output results JSON', 'results.json')
   .option('--concurrency <n>', 'Concurrency level', '1')
@@ -45,8 +51,13 @@ program
     const numThread = options.numThread ? Number.parseInt(options.numThread, 10) : undefined;
     const iterations = options.iterations ? Number.parseInt(options.iterations, 10) : undefined;
 
+    // If models arg doesn't end in .json, assume it's a name in models/ dir
+    const modelsFile = options.models.endsWith('.json') 
+      ? options.models 
+      : `models/${options.models}.json`;
+
     await runAll({
-      modelsFile: options.models,
+      modelsFile,
       scenariosDir: options.scenarios,
       outFile: options.out,
       concurrency: Number.isNaN(concurrency) ? 1 : concurrency,

@@ -1,0 +1,17 @@
+[
+    "tinyllama",
+    "llama3:8b",
+    "llama2:7b",
+    "mistral",
+    "gemma:2b",
+    "gemma:7b",
+    "phi3",
+    "neural-chat",
+    "starling-lm",
+    "codellama:7b",
+    "qwen:0.5b",
+    "qwen:1.8b",
+    "qwen:4b",
+    "qwen:7b",
+    "orca-mini"
+]

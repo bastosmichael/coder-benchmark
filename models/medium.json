@@ -1,0 +1,9 @@
+[
+    "mixtral",
+    "codellama:34b",
+    "yi:34b",
+    "qwen:32b",
+    "deepseek-coder:33b",
+    "phind-codellama:34b",
+    "command-r"
+]
