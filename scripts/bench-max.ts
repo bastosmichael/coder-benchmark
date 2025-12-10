@@ -13,10 +13,11 @@ async function main() {
         MAIN_GPU: 0,
         PARALLEL_SLOTS: 10,
         ITERATIONS: 3,
+        MODELS: undefined as string | undefined, // Defaults to CLI default if not set
     };
 
     const args = process.argv.slice(2);
-    const config: Record<string, string | number> = {};
+    const config: Record<string, string | number | undefined> = {};
     const passthroughArgs: string[] = [];
 
     // Parse args manually to handle key=value and standard flags
@@ -30,6 +31,7 @@ async function main() {
             else if (key === 'num-gpu' || key === 'numGpu') config.NUM_GPU = Number(value);
             else if (key === 'parallel') config.PARALLEL_SLOTS = Number(value);
             else if (key === 'iterations') config.ITERATIONS = Number(value);
+            else if (key === 'models') config.MODELS = value;
             else passthroughArgs.push(arg);
         } else if (arg.startsWith('--')) {
             const key = arg.replace(/^--/, '');
@@ -43,6 +45,7 @@ async function main() {
             else if (key === 'main-gpu' && isNextNumber) { config.MAIN_GPU = Number(value); i++; }
             else if (key === 'num-gpu' && isNextNumber) { config.NUM_GPU = Number(value); i++; }
             else if (key === 'iterations' && isNextNumber) { config.ITERATIONS = Number(value); i++; }
+            else if (key === 'models' && value) { config.MODELS = value; i++; }
             else { passthroughArgs.push(arg); }
         } else if (!Number.isNaN(Number(arg)) && i === 0) {
             // Assume first positional number is limit (backward compat / convenient)
@@ -58,6 +61,7 @@ async function main() {
     const MAIN_GPU = config.MAIN_GPU ?? defaults.MAIN_GPU;
     const PARALLEL_SLOTS = config.PARALLEL_SLOTS ?? defaults.PARALLEL_SLOTS;
     const ITERATIONS = config.ITERATIONS ?? defaults.ITERATIONS;
+    const MODELS = (config.MODELS as string | undefined) ?? defaults.MODELS;
 
     console.log('Stopping any existing Ollama instance...');
     try {
@@ -120,18 +124,25 @@ async function main() {
     console.log('Waiting for Ollama to start...');
     await new Promise(r => setTimeout(r, 5000));
 
+    // Construct args for npm run bench
+    const benchArgs = [
+        'run', 'bench', '--',
+        '--limit', String(LIMIT),
+        '--sequential-models',
+        '--concurrency', String(CONCURRENCY),
+        '--main-gpu', String(MAIN_GPU),
+        '--num-gpu', String(NUM_GPU)
+    ];
+
+    if (MODELS) {
+        benchArgs.push('--models', MODELS);
+    }
+
+    benchArgs.push(...passthroughArgs);
+
     console.log('Running benchmark...');
     try {
-        await execa('npm', [
-            'run', 'bench', '--',
-            '--limit', String(LIMIT),
-            '--sequential-models',
-            '--concurrency', String(CONCURRENCY),
-            '--main-gpu', String(MAIN_GPU),
-            '--num-gpu', String(NUM_GPU),
-            '--iterations', String(ITERATIONS),
-            ...passthroughArgs
-        ], { stdio: 'inherit' });
+        await execa('npm', benchArgs, { stdio: 'inherit' });
     } catch (e) {
         console.error('Benchmark failed or was interrupted');
         process.exitCode = 1;
